@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "zero-point",
+  "version": "${version}",
+  "name": "Zero Point",
+  "description": "Modded client for fabric",
+  "authors": [
+	"TheSilverEcho"
+  ],
+  "contact": {
+	"website": "https://github.com/TheSilverEcho"
+  },
+  "license": "MIT",
+  "icon": "assets/Zero-point/icon.png",
+  "environment": "client",
+  "entrypoints": {
+	"client": [
+	  "me.thesilverecho.zeropoint.client.ZeroPointClient"
+	]
+  },
+  "mixins": [
+	"zero-point.mixins.json"
+  ],
+  "depends": {
+	"fabricloader": ">=0.9.0+build.204",
+	"fabric": "*",
+	"minecraft": "1.16.2-beta.1"
+  }
+}
