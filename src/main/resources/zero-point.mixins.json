@@ -4,6 +4,16 @@
   "package": "me.thesilverecho.zeropoint.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+	"AbstractButtonWidgetMixin",
+	"BipedEntityModelMixin",
+	"HandledScreenMixin",
+	"InGameHudMixin",
+	"MerchantScreenMixin",
+	"PlayerEntityRendererMixin",
+	"PlayerListEntryMixin",
+	"SpriteAtlasTextureMixin",
+	"TitleScreenMixin",
+	"WorldRendererMixin"
   ],
   "client": [
   ],
