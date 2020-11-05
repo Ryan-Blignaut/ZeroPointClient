@@ -23,12 +23,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 	@Inject(method = "setAngles", at = @At("INVOKE"), cancellable = true) private void setPosition1(LivingEntity livingEntity, float f, float g, float h,
 			float i, float j, CallbackInfo ci)
 	{
-		this.head.pitch = 0.5f;
+	/*	this.head.pitch = 0.5f;
 		this.head.yaw = 0.75f;
 		this.rightArm.pitch = 4.75f;
 		this.rightArm.yaw = -1.0f;
 		this.leftArm.pitch = 4.5f;
-		this.leftArm.yaw = -1.25f;
+		this.leftArm.yaw = -1.25f;*/
 
 	}
 }

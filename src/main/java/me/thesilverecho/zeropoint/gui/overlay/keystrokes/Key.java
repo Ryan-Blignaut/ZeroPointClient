@@ -1,7 +1,5 @@
 package me.thesilverecho.zeropoint.gui.overlay.keystrokes;
 
-import jchroma.utils.ColorRef;
-import me.thesilverecho.zeropoint.ZeroPointClient;
 import me.thesilverecho.zeropoint.gui.GuiHelper;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,21 +10,20 @@ import java.awt.*;
 public class Key extends BaseKey
 {
 	private final KeyBinding keyBinding;
-	private final int rCode;
 	private boolean wasPressed;
 	private long lastPressTime;
 
-	public Key(KeyBinding keyBinding, int xOffset, int yOffset, int rCode)
+	public Key(KeyBinding keyBinding, int xOffset, int yOffset)
 	{
 		super(xOffset, yOffset);
 		this.keyBinding = keyBinding;
-		this.rCode = rCode;
 		this.wasPressed = true;
 		this.lastPressTime = 0;
 
 	}
 
-	@Override protected void renderKey(MatrixStack matrixStack)
+	@Override
+	protected void renderKey(MatrixStack matrixStack)
 	{
 
 		float x = 122;
@@ -58,7 +55,7 @@ public class Key extends BaseKey
 		}
 
 		GuiHelper.fill(matrixStack, 7, x + xOffset, y + yOffset, x + xOffset + 22, y + yOffset + 22, col);
-		ZeroPointClient.effect.setKeyColor(rCode, ColorRef.fromRGB(col));
+//		ZeroPointClient.effect.setKeyColor(rCode, ColorRef.fromRGB(col));
 
 		GuiHelper.clipStart(x + xOffset, y + yOffset, 22, 22);
 		GuiHelper.fillEllipse(matrixStack, GL11.GL_TRIANGLE_FAN, (x + xOffset + 11), (y + yOffset + 11), radius, radius,

@@ -1,12 +1,10 @@
 package me.thesilverecho.zeropoint.mixin;
 
-import me.thesilverecho.zeropoint.module.render.Esp;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Matrix4f;
@@ -16,8 +14,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.stream.StreamSupport;
 
 @Mixin(WorldRenderer.class) public abstract class WorldRendererMixin
 {
@@ -40,7 +36,7 @@ import java.util.stream.StreamSupport;
 		if (player.getMainHandStack().getItem() == Items.STICK)
 		{
 			ci.cancel();
-			HitResult hitResult = player.rayTrace(10, MinecraftClient.getInstance().getTickDelta(), false);
+			HitResult hitResult = player.raycast(10, MinecraftClient.getInstance().getTickDelta(), false);
 			if (hitResult.getType() == HitResult.Type.BLOCK)
 			{
 

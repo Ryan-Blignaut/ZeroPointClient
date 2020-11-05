@@ -4,20 +4,22 @@
   "package": "me.thesilverecho.zeropoint.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-	"AbstractButtonWidgetMixin",
-	"BipedEntityModelMixin",
-	"HandledScreenMixin",
-	"InGameHudMixin",
-	"MerchantScreenMixin",
-	"PlayerEntityRendererMixin",
-	"PlayerListEntryMixin",
-	"SpriteAtlasTextureMixin",
-	"TitleScreenMixin",
-	"WorldRendererMixin"
+    "AbstractButtonWidgetMixin",
+    "BipedEntityModelMixin",
+    "HandledScreenMixin",
+    "InGameHudMixin",
+    "ItemRendererMixin",
+    "MerchantScreenMixin",
+    "PlayerEntityRendererMixin",
+    "PlayerListEntryMixin",
+    "SpriteAtlasTextureMixin",
+    "TitleScreenMixin",
+    "BufferBuilderStorageMixin",
+    "WorldRendererMixin"
   ],
   "client": [
   ],
   "injectors": {
-	"defaultRequire": 1
+    "defaultRequire": 1
   }
 }

@@ -1,7 +1,8 @@
 package me.thesilverecho.zeropoint.gui.overlay.keystrokes;
 
+import com.google.common.collect.ImmutableBiMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import jchroma.utils.KeyboardKeys;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -15,11 +16,11 @@ public class KeystrokesRenderer
 
 	private KeystrokesRenderer()
 	{
-
-		keyStream = Lists.newArrayList(new Key(MinecraftClient.getInstance().options.keyForward, 26, 2, KeyboardKeys.RZKEY_W),
-				new Key(MinecraftClient.getInstance().options.keyBack, 26, 26, KeyboardKeys.RZKEY_S),
-				new Key(MinecraftClient.getInstance().options.keyLeft, 2, 26, KeyboardKeys.RZKEY_A),
-				new Key(MinecraftClient.getInstance().options.keyRight, 50, 26, KeyboardKeys.RZKEY_D));
+//ImmutableList<Key> immutableList =
+		keyStream = Lists.newArrayList(new Key(MinecraftClient.getInstance().options.keyForward, 26, 2),
+				new Key(MinecraftClient.getInstance().options.keyBack, 26, 26),
+				new Key(MinecraftClient.getInstance().options.keyLeft, 2, 26),
+				new Key(MinecraftClient.getInstance().options.keyRight, 50, 26));
 	}
 
 	public static KeystrokesRenderer getInstance()

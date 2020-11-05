@@ -53,6 +53,7 @@ public class Config2
 			String content = configFile.exists() ? FileUtils.readFileToString(configFile, "utf-8") : "{}";
 			JsonElement jsonElement = (new JsonParser().parse(content));
 			JsonObject jsonObject = jsonElement.getAsJsonObject();
+
 			for (Field declaredField : Config2.class.getDeclaredFields())
 			{
 				if (declaredField.getType() == BooleanValue.class)
