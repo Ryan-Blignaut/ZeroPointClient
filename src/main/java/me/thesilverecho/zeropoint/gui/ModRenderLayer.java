@@ -41,12 +41,14 @@ public class ModRenderLayer extends RenderLayer
 
 			for (int i = 0; i < ZeroPointClient.sprites.length; i++)
 			{
-				if (!active)
-				{
-					ZeroPointClient.sprites[i] = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("zero-point", "cosmic/cosmic_" + i))/*.apply(new Identifier("zero-point", "cosmic/cosmic_" + i))*/;
-					active = true;
-				}
-				Sprite sprite = ZeroPointClient.sprites[i];
+//				if (!active)
+//				{
+//					ZeroPointClient.sprites[i] = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("zero-point", "cosmic/cosmic_" + i))/*.apply(new Identifier("zero-point", "cosmic/cosmic_" + i))*/;
+//					active = true;
+//				}
+//				Sprite sprite = ZeroPointClient.sprites[i];
+				Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("zero-point", "cosmic/cosmic_" + i));
+
 				ZeroPointClient.cosmicUVs.put(sprite.getMinU());
 				ZeroPointClient.cosmicUVs.put(sprite.getMinV());
 				ZeroPointClient.cosmicUVs.put(sprite.getMaxU());

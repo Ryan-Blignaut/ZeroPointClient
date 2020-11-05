@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
 
 public class Config
 {
-	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	private static JsonObject config = new JsonObject();
-	private File file;
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	private JsonObject config = new JsonObject();
+	private final File file;
 	private final ArrayList<Object> configObjects = new ArrayList<>();
 
 	public void loadToJson(Object o)
