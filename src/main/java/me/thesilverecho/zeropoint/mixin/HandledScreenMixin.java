@@ -1,8 +1,7 @@
 package me.thesilverecho.zeropoint.mixin;
 
-import me.thesilverecho.zeropoint.ZeroPointClient;
-import me.thesilverecho.zeropoint.gui.overlay.watermark.Watermark;
 import me.thesilverecho.zeropoint.gui.button.ClickableButton;
+import me.thesilverecho.zeropoint.gui.overlay.watermark.Watermark;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
@@ -14,10 +13,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -59,10 +54,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 				/*	MinecraftClient.getInstance().interactionManager.interactBlock(player, world, Hand.MAIN_HAND,
 										new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), Direction.EAST, pos, false));*/
 			//			ZeroPointClient.BLOCK_POS_HASH.re
-			ZeroPointClient.BLOCK_POS_HASH.forEach((pos, blockState) -> menuButtons
-					.add(new ClickableButton(x.addAndGet(20), y.addAndGet(20), 10, 10, blockState.getBlock().getName().asString(),
-							button -> MinecraftClient.getInstance().interactionManager.interactBlock(player, world, Hand.MAIN_HAND,
-									new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), Direction.EAST, pos, false)))));
+//			ZeroPointClient.BLOCK_POS_HASH.forEach((pos, blockState) -> menuButtons
+//					.add(new ClickableButton(x.addAndGet(20), y.addAndGet(20), 10, 10, blockState.getBlock().getName().asString(),
+//							button -> MinecraftClient.getInstance().interactionManager.interactBlock(player, world, Hand.MAIN_HAND,
+//									new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), Direction.EAST, pos, false)))));
 			/*ZeroPointClient.BLOCK_POS.removeIf(blockPos -> player.getBlockPos().getSquaredDistance(blockPos) < 3);
 			ZeroPointClient.BLOCK_POS.forEach(
 					pos -> menuButtons.add(new ClickableButton(x.addAndGet(20), y.addAndGet(20), 10, 10, world.getBlockState(pos).getBlock().getName()

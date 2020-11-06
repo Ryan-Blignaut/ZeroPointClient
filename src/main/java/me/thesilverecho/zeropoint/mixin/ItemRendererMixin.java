@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemRenderer.class)
-public class ItemRendererMixin
+public abstract class ItemRendererMixin
 {
 	private static ItemStack stack;
 

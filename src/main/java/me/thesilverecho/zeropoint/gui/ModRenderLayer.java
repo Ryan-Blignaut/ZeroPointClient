@@ -23,7 +23,7 @@ public class ModRenderLayer extends RenderLayer
 	public static CosmicShader shader = new CosmicShader();
 	public static RenderLayer POT_OVERLAY;
 	public static RenderLayer EXTREME_OVER;
-	private static boolean active;
+	private static boolean active = false;
 
 	static
 	{
@@ -37,25 +37,22 @@ public class ModRenderLayer extends RenderLayer
 
 		MultiPhaseParameters extremeOver = MultiPhaseParameters.builder().writeMaskState(COLOR_MASK).cull(DISABLE_CULLING).depthTest(EQUAL_DEPTH_TEST).transparency(GLINT_TRANSPARENCY).texturing(new Texturing("glint_transparency", () ->
 		{
-//			ZeroPointClient.cosmicUVs = BufferUtils.createFloatBuffer(4 * ZeroPointClient.sprites.length);
-
-			for (int i = 0; i < ZeroPointClient.sprites.length; i++)
+			if (!active)
 			{
-//				if (!active)
-//				{
-//					ZeroPointClient.sprites[i] = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("zero-point", "cosmic/cosmic_" + i))/*.apply(new Identifier("zero-point", "cosmic/cosmic_" + i))*/;
-//					active = true;
-//				}
-//				Sprite sprite = ZeroPointClient.sprites[i];
-				Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("zero-point", "cosmic/cosmic_" + i));
+				for (int i = 0; i < ZeroPointClient.sprites.length; i++)
+				{
+					ZeroPointClient.sprites[i] = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("zero-point", "cosmic/cosmic_" + i))/*.apply(new Identifier("zero-point", "cosmic/cosmic_" + i))*/;
+					active = true;
+					Sprite sprite = ZeroPointClient.sprites[i];
+//				Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier("zero-point", "cosmic/cosmic_" + i));
 
-				ZeroPointClient.cosmicUVs.put(sprite.getMinU());
-				ZeroPointClient.cosmicUVs.put(sprite.getMinV());
-				ZeroPointClient.cosmicUVs.put(sprite.getMaxU());
-				ZeroPointClient.cosmicUVs.put(sprite.getMaxV());
+					ZeroPointClient.cosmicUVs.put(sprite.getMinU());
+					ZeroPointClient.cosmicUVs.put(sprite.getMinV());
+					ZeroPointClient.cosmicUVs.put(sprite.getMaxU());
+					ZeroPointClient.cosmicUVs.put(sprite.getMaxV());
+				}
+				ZeroPointClient.cosmicUVs.flip();
 			}
-			ZeroPointClient.cosmicUVs.flip();
-
 			shader.bind();
 		}, shader::unBind)).build(false);
 
