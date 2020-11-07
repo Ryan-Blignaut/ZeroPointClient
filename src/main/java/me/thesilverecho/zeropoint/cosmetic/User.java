@@ -1,4 +1,4 @@
-package me.thesilverecho.zeropoint;
+package me.thesilverecho.zeropoint.cosmetic;
 
 import java.util.ArrayList;
 

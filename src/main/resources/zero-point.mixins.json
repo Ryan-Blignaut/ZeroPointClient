@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "AbstractButtonWidgetMixin",
+    "AbstractClientPlayerEntityMixin",
     "BipedEntityModelMixin",
+    "BufferBuilderStorageMixin",
     "HandledScreenMixin",
     "InGameHudMixin",
     "ItemRendererMixin",
@@ -14,7 +16,6 @@
     "PlayerListEntryMixin",
     "SpriteAtlasTextureMixin",
     "TitleScreenMixin",
-    "BufferBuilderStorageMixin",
     "WorldRendererMixin"
   ],
   "client": [

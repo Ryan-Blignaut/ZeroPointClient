@@ -54,7 +54,6 @@ public abstract class SpriteAtlasTextureMixin
 			} finally
 			{
 				if (resource != null)
-				{
 					try
 					{
 						resource.close();
@@ -62,8 +61,6 @@ public abstract class SpriteAtlasTextureMixin
 					{
 						throwable.addSuppressed(var22);
 					}
-				}
-
 			}
 
 			cir.setReturnValue(sprite);

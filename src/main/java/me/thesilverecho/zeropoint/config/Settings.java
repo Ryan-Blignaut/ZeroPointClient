@@ -8,7 +8,8 @@ public class Settings
 
 	@ConfigOption
 	public static String SLOWNESS = "123";
-
+	@ConfigOption
+	public static Integer wingRed = 100, wingGreen = 100, wingBlue = 100;
 
 	public static void create()
 	{

@@ -1,9 +1,10 @@
 package me.thesilverecho.zeropoint;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import me.thesilverecho.zeropoint.config.Config;
+import me.thesilverecho.zeropoint.config.Settings;
+import me.thesilverecho.zeropoint.cosmetic.User;
 import me.thesilverecho.zeropoint.gui.DrawingHelper;
 import me.thesilverecho.zeropoint.gui.overlay.watermark.WatermarkType;
 import me.thesilverecho.zeropoint.gui.screen.SlideOut;
@@ -25,11 +26,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.FloatBuffer;
 import java.util.Collections;
@@ -41,25 +40,22 @@ import java.util.concurrent.CompletableFuture;
 @Environment(EnvType.CLIENT)
 public class ZeroPointClient implements ClientModInitializer
 {
-	public static final Logger LOGGER = LogManager.getLogger("Zero Point");
-	public static final DrawingHelper DRAWING_HELPER = new DrawingHelper();
-	public static final WatermarkType WATERMARK_TYPE = WatermarkType.TOP;
+	public static final String MOD_ID = "zero-point";
 	public static final Config CONFIG = new Config(new File(MinecraftClient.getInstance().runDirectory, "Config" + File.separator + "Zero-point.json"));
+	public static final Logger LOGGER = LogManager.getLogger("Zero Point");
+	public static final WatermarkType WATERMARK_TYPE = WatermarkType.TOP;
+	public static final DrawingHelper DRAWING_HELPER = new DrawingHelper();
 
 	public static FloatBuffer cosmicUVs = BufferUtils.createFloatBuffer(4 * 10);
 	public static Sprite[] sprites = new Sprite[10];
 
 
 	public static Map<UUID, User> PLAYER_COSMETICS = new HashMap<>();
-	private final Gson gson = new GsonBuilder().create();
-	private String url = "https://raw.githubusercontent.com/TheSilverEcho/ZeroPointClient/master/contributors.json";
-	private final Type COSMETIC_SELECT_TYPE = new TypeToken<Map<UUID, User>>()
-	{
-	}.getType();
 
 	@Override
 	public void onInitializeClient()
 	{
+		Settings.create();
 		KeyBinds.registerKeys();
 		CompletableFuture.supplyAsync(this::getUserInfo).thenAcceptAsync(userMap ->
 		{
@@ -92,9 +88,12 @@ public class ZeroPointClient implements ClientModInitializer
 
 	private Map<UUID, User> getUserInfo()
 	{
-		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new URL(url).openStream())))
+		String url = "https://raw.githubusercontent.com/TheSilverEcho/ZeroPointClient/master/contributors.json";
+		try (InputStreamReader reader = new InputStreamReader(new URL(url).openStream()))
 		{
-			return gson.fromJson(bufferedReader, COSMETIC_SELECT_TYPE);
+			return new GsonBuilder().create().fromJson(reader, new TypeToken<Map<UUID, User>>()
+			{
+			}.getType());
 		} catch (IOException e)
 		{
 			e.printStackTrace();
