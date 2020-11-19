@@ -20,7 +20,7 @@ public class Config
 	public void loadToJson(Object o)
 	{
 		Class<?> clazz = o.getClass();
-		Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigOption.class) && config.has(clazz.getSimpleName())).forEach(field ->
+		Arrays.stream(clazz.getDeclaredFields()).filter(field -> field.isAnnotationPresent(ConfigOption.class) /*&& config.has(clazz.getSimpleName())*/).forEach(field ->
 		{
 			field.setAccessible(true);
 			JsonObject classObject = config.get(clazz.getSimpleName()).getAsJsonObject();
@@ -73,8 +73,9 @@ public class Config
 	{
 		if (Arrays.stream(o.getClass().getDeclaredFields()).noneMatch(field -> field.isAnnotationPresent(ConfigOption.class)))
 			return;
-		loadToClass(o);
 		configObjects.add(o);
+		save();
+		loadToClass(o);
 	}
 
 	public void loadToClass(Object o)

@@ -17,7 +17,6 @@ public abstract class Shader
 
 	public Shader(String vertFile, String fragFile)
 	{
-
 		this.vertFile = readStreamToString(Shader.class.getResourceAsStream("/assets/zero-point/shaders/" + vertFile));
 		this.fragFile = readStreamToString(Shader.class.getResourceAsStream("/assets/zero-point/shaders/" + fragFile));
 	}
@@ -72,6 +71,8 @@ public abstract class Shader
 	{
 		glUseProgram(0);
 	}
+
+	public abstract void bind();
 
 	public void destroy()
 	{

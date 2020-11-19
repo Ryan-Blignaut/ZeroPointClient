@@ -1,11 +1,9 @@
 package me.thesilverecho.zeropoint.gui.button;
 
-import javafx.scene.image.PixelFormat;
 import me.thesilverecho.zeropoint.gui.GuiHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import org.lwjgl.system.windows.PIXELFORMATDESCRIPTOR;
 
 import java.awt.*;
 
@@ -19,16 +17,21 @@ public class ClickableButton extends AbstractMenuButton
 		this.onPress = onPress;
 	}
 
-	@Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
+	@Override
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
 	{
-		GuiHelper.fill(matrices, 7, x, y, x + width, y + height, new Color(20, 156, 219, 100).getRGB());
+		GuiHelper.drawRoundedRect(matrices, (int) (x - 2), (int) (y - 2), (int) (x + width + 2), (int) (y + height + 2), 2, new Color(39, 40, 47).getRGB());
+		GuiHelper.drawGradientRoundedRect(matrices, (int) (x - 1), (int) (y - 1), (int) (x + width + 1), (int) (y + height + 1), 2, new Color(59, 66, 82).getRGB(), new Color(67, 76, 94).getRGB());
 		TextRenderer tr = MinecraftClient.getInstance().textRenderer;
-		tr.draw(matrices, text, x , y + tr.fontHeight/2f /*- (height/2 + 0*//*tr.fontHeight*//*)*/ , 1);
+		width = tr.getWidth(text) + 2;
+		tr.draw(matrices, text, x + 1, y + 1 /*+ tr.fontHeight*/ /*+ height*/ /*/ 2f*/ /*- (height/2 + 0*//*tr.fontHeight*//*)*/, new Color(216, 222, 233).getRGB());
 	}
 
-	@Override protected void onClick(double mouseX, double mouseY)
+	@Override
+	public void onClick(double mouseX, double mouseY)
 	{
-		this.onPress.onPress(this);
+		if (isMouseOver(mouseX, mouseY))
+			this.onPress.onPress(this);
 	}
 
 	public interface PressAction

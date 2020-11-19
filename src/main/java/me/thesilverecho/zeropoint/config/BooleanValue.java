@@ -4,6 +4,14 @@ public class BooleanValue
 {
 	private boolean on;
 	private String name;
+	private SettingCategory Category;
+
+	public BooleanValue(String name, SettingCategory category)
+	{
+		this.on = false;
+		this.name = name;
+		Category = category;
+	}
 
 	public BooleanValue(boolean b)
 	{
@@ -40,7 +48,12 @@ public class BooleanValue
 	public void toggle()
 	{
 		this.on = !this.on;
-		Config2.updateConfig();
+//		Config2.updateConfig();
+	}
+
+	public SettingCategory getCategory()
+	{
+		return Category;
 	}
 
 }

@@ -1,7 +1,6 @@
 package me.thesilverecho.zeropoint.gui.button;
 
 import me.thesilverecho.zeropoint.ZeroPointClient;
-import me.thesilverecho.zeropoint.gui.CustomColor;
 import me.thesilverecho.zeropoint.gui.Icon;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -29,15 +28,16 @@ public class SocialButtons extends AbstractMenuButton
 		this.colour = colour;
 	}
 
-	@Override public boolean mouseClicked(double mouseX, double mouseY, int button)
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button)
 	{
-
 		if (isMouseOver(mouseX, mouseY))
 			Util.getOperatingSystem().open(url);
 		return this.isMouseOver(mouseX, mouseY);
 	}
 
-	@Override public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
+	@Override
+	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
 	{
 		Color tempCol;
 		boolean isPressed = isMouseOver(mouseX, mouseY);

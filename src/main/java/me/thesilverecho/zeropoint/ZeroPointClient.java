@@ -6,8 +6,11 @@ import me.thesilverecho.zeropoint.config.Config;
 import me.thesilverecho.zeropoint.config.Settings;
 import me.thesilverecho.zeropoint.cosmetic.User;
 import me.thesilverecho.zeropoint.gui.DrawingHelper;
+import me.thesilverecho.zeropoint.gui.font.GlyphPageFontRenderer;
 import me.thesilverecho.zeropoint.gui.overlay.watermark.WatermarkType;
-import me.thesilverecho.zeropoint.gui.screen.SlideOut;
+import me.thesilverecho.zeropoint.gui.potionHud.EffectSetting;
+import me.thesilverecho.zeropoint.gui.screen.MenuScreen;
+import me.thesilverecho.zeropoint.mod.ModPerspective;
 import me.thesilverecho.zeropoint.module.Module;
 import me.thesilverecho.zeropoint.module.ModuleManager;
 import me.thesilverecho.zeropoint.registration.KeyBinds;
@@ -21,7 +24,9 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.BufferUtils;
@@ -41,6 +46,13 @@ import java.util.concurrent.CompletableFuture;
 public class ZeroPointClient implements ClientModInitializer
 {
 	public static final String MOD_ID = "zero-point";
+
+
+	private int getRadius()
+	{
+		return 1;
+	}
+
 	public static final Config CONFIG = new Config(new File(MinecraftClient.getInstance().runDirectory, "Config" + File.separator + "Zero-point.json"));
 	public static final Logger LOGGER = LogManager.getLogger("Zero Point");
 	public static final WatermarkType WATERMARK_TYPE = WatermarkType.TOP;
@@ -51,12 +63,16 @@ public class ZeroPointClient implements ClientModInitializer
 
 
 	public static Map<UUID, User> PLAYER_COSMETICS = new HashMap<>();
+	public static GlyphPageFontRenderer RENDERER;
 
 	@Override
 	public void onInitializeClient()
 	{
 		Settings.create();
 		KeyBinds.registerKeys();
+		Registry.STATUS_EFFECT.forEach(statusEffect ->
+				Settings.EFFECT_SETTINGS.add(new EffectSetting(StatusEffect.getRawId(statusEffect))));
+		Settings.save();
 		CompletableFuture.supplyAsync(this::getUserInfo).thenAcceptAsync(userMap ->
 		{
 			if (userMap != null)
@@ -81,7 +97,11 @@ public class ZeroPointClient implements ClientModInitializer
 			ModuleManager.ACTIVE_MODULES.forEach(Module::keyPressed);
 
 			if (KeyBinds.MENU.wasPressed())
-				MinecraftClient.getInstance().openScreen(new SlideOut());
+			{
+				MinecraftClient.getInstance().openScreen(new MenuScreen());
+//				Registry.STATUS_EFFECT.forEach(statusEffect -> Settings.effectSettings.add(new EffectSetting(StatusEffect.getRawId(statusEffect))));
+			}
+			ModPerspective.tickPerspective();
 		});
 
 	}

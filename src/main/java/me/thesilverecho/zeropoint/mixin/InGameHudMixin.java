@@ -1,7 +1,9 @@
 package me.thesilverecho.zeropoint.mixin;
 
+import me.thesilverecho.zeropoint.gui.Box2d;
 import me.thesilverecho.zeropoint.gui.GuiHelper;
 import me.thesilverecho.zeropoint.gui.overlay.keystrokes.KeystrokesRenderer;
+import me.thesilverecho.zeropoint.gui.potionHud.EffectRender;
 import me.thesilverecho.zeropoint.module.Module;
 import me.thesilverecho.zeropoint.module.ModuleManager;
 import net.minecraft.client.MinecraftClient;
@@ -22,9 +24,11 @@ import java.util.Comparator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 // renderScoreboardSidebar in InGameHud
-@Mixin(InGameHud.class) public abstract class InGameHudMixin extends DrawableHelper
+@Mixin(InGameHud.class)
+public abstract class InGameHudMixin extends DrawableHelper
 {
-	@Inject(method = "renderScoreboardSidebar", at = @At(value = "HEAD"), cancellable = true) private void renderScoreboardSidebar(
+	@Inject(method = "renderScoreboardSidebar", at = @At(value = "HEAD"), cancellable = true)
+	private void renderScoreboardSidebar(
 			MatrixStack matrixStack, ScoreboardObjective scoreboardObjective, CallbackInfo ci)
 	{
 		//		ci.cancel();
@@ -32,7 +36,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 		//				MinecraftClient.getInstance().getWindow().getScaledHeight());
 	}
 
-	@Inject(method = "renderCrosshair", at = @At(value = "HEAD"), cancellable = true) private void customCrossHair(CallbackInfo ci)
+	@Inject(method = "renderCrosshair", at = @At(value = "HEAD"), cancellable = true)
+	private void customCrossHair(CallbackInfo ci)
 	{
 	/*	if (Config2.customCrosshairEnabled.isOn())
 		{
@@ -41,18 +46,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
 		}*/
 	}
 
-	@Shadow public abstract TextRenderer getFontRenderer();
 
-	@Shadow private int scaledWidth;
+	@Inject(method = "renderStatusBars", at = @At(value = "CONSTANT", args = "stringValue=food", shift = At.Shift.BY, by = 2))
+	private void renderStatusBars(MatrixStack matrices, CallbackInfo ci)
+	{
+		float saturationLevel = MinecraftClient.getInstance().player.getHungerManager().getSaturationLevel();
+		for (int i = 0; i < saturationLevel; i++)
+		{
+			GuiHelper.rectangle(matrices, 7, new Box2d(i * 16, i * 16, 16 + i * 16, 16 + i * 16), new Color(255, 255, 255, 100).getRGB());
+		}
+	}
 
-	@Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/options/GameOptions;hudHidden:Z", ordinal = 2)) private void onDraw(
+
+	@Shadow
+	public abstract TextRenderer getFontRenderer();
+
+	@Shadow
+	private int scaledWidth;
+
+	@Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/options/GameOptions;hudHidden:Z", ordinal = 2))
+	private void onDraw(
 			MatrixStack matrixStack, float f, CallbackInfo ci)
 	{
 		if (MinecraftClient.getInstance().options.debugEnabled)
 			return;
 
 		KeystrokesRenderer.getInstance().renderKeystrokes(matrixStack);
-
+		EffectRender.render(matrixStack);
 		//		List<Module> mods = new ArrayList<>();
 	/*	AtomicInteger y = new AtomicInteger(6);
 		ModuleManager.ACTIVE_MODULES.stream().sorted(Comparator.comparingDouble(module -> getFontRenderer().getWidth(module.getName()))).forEach(

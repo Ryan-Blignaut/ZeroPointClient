@@ -1,5 +1,6 @@
 package me.thesilverecho.zeropoint.mixin;
 
+import me.thesilverecho.zeropoint.module.sky.Skybox;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
@@ -13,14 +14,31 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(WorldRenderer.class) public abstract class WorldRendererMixin
+@Mixin(WorldRenderer.class)
+public abstract class WorldRendererMixin
 {
 
-	@Shadow private ClientWorld world;
+	@Shadow
+	private ClientWorld world;
 
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0)) private void render(
+	@Inject(
+			method = "renderSky",
+			slice = @Slice(from = @At(ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getRainGradient(F)F")),
+			at = @At(shift = At.Shift.AFTER, ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lnet/minecraft/util/math/Quaternion;)V"))
+	private void renderExtras(MatrixStack ms, float partialTicks, CallbackInfo ci)
+	{
+//		if (isGogSky())
+//		{
+		Skybox.renderExtra(ms, world, partialTicks, 0);
+//		}
+	}
+
+
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0))
+	private void render(
 			MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer,
 			LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci)
 	{
@@ -28,8 +46,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //				PlayerEntity.class::cast).forEach(playerEntity -> Esp.renderEsp(playerEntity, matrices, tickDelta, camera));
 	}
 
-	@Inject(method = "drawShapeOutline", at = @At("INVOKE"), cancellable = true) private static void drawBlockOutline(MatrixStack matrixStack,
-			VertexConsumer vertexConsumer, VoxelShape voxelShape, double d, double e, double f, float g, float h, float i, float j, CallbackInfo ci)
+	@Inject(method = "drawShapeOutline", at = @At("INVOKE"), cancellable = true)
+	private static void drawBlockOutline(MatrixStack matrixStack,
+	                                     VertexConsumer vertexConsumer, VoxelShape voxelShape, double d, double e, double f, float g, float h, float i, float j, CallbackInfo ci)
 	{
 
 		ClientPlayerEntity player = MinecraftClient.getInstance().player;

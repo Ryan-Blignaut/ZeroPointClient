@@ -2,6 +2,8 @@ package me.thesilverecho.zeropoint.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.thesilverecho.zeropoint.shader.FeatheredRect;
+import me.thesilverecho.zeropoint.shader.RoundedRect;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.BufferBuilder;
@@ -13,6 +15,7 @@ import net.minecraft.client.util.math.Vector4f;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec2f;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 
 import java.awt.*;
 
@@ -25,6 +28,32 @@ public class GuiHelper extends DrawableHelper
 	private static final Tessellator tessellator = Tessellator.getInstance();
 	private static final BufferBuilder bufferBuilder = tessellator.getBuffer();
 	private final static Vec2f[] arr = new Vec2f[30];
+
+
+	public static void drawTexturedRect(float x, float y, float width, float height, float uMin, float uMax, float vMin, float vMax, int filter)
+	{
+		GlStateManager.enableTexture();
+		GlStateManager.enableBlend();
+		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, filter);
+
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder buffer = tessellator.getBuffer();
+		buffer.begin(7, VertexFormats.POSITION_TEXTURE);
+		buffer.vertex(x, y + height, 0.0D).texture(uMin, vMax).next();
+		buffer.vertex(x + width, y + height, 0.0D).texture(uMax, vMax).next();
+		buffer.vertex(x + width, y, 0.0D).texture(uMax, vMin).next();
+		buffer.vertex(x, y, 0.0D).texture(uMin, vMin).next();
+		tessellator.draw();
+
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+		GlStateManager.disableBlend();
+	}
+
 
 	public static void gradientTopToBottomRectangle(MatrixStack matrixStack, int mode, Box2d box2d, int colorStart, int colorEnd)
 	{
@@ -53,17 +82,50 @@ public class GuiHelper extends DrawableHelper
 	{
 		//bottom left
 		GuiHelper.bufferBuilder.vertex(matrix, box2d.getLeft(), box2d.getBottom(), 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha())
-		                       .next();
+				.next();
 		//bottom right
 		GuiHelper.bufferBuilder.vertex(matrix, box2d.getRight(), box2d.getBottom(), 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha())
-		                       .next();
+				.next();
 		//top right
 		GuiHelper.bufferBuilder.vertex(matrix, box2d.getRight(), box2d.getTop(), 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha())
-		                       .next();
+				.next();
 		//top left
 		GuiHelper.bufferBuilder.vertex(matrix, box2d.getLeft(), box2d.getTop(), 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha())
-		                       .next();
+				.next();
 	}
+
+
+	public static void drawFeatheredRect(MatrixStack matrixStack, float left, float top, float right, float bottom, float thickness, int col)
+	{
+		FeatheredRect inst = FeatheredRect.INST;
+		inst.bind();
+		inst.setThickness(thickness);
+		inst.setInnerRect(left + thickness, top + thickness, right - thickness, bottom - thickness);
+		fill(matrixStack, (int) left, (int) top, (int) right, (int) bottom, col);
+		inst.unBind();
+	}
+
+	public static void drawRoundedRect(MatrixStack matrixStack, int left, int top, int right, int bottom, int radius, int color)
+	{
+		RoundedRect inst = RoundedRect.INST;
+		inst.bind();
+		inst.setThickness(radius - 1);
+		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
+		fill(matrixStack, left, top, right, bottom, color);
+		inst.unBind();
+	}
+
+
+	public static void drawGradientRoundedRect(MatrixStack matrixStack, int left, int top, int right, int bottom, int radius, int colorStart, int colorEnd)
+	{
+		RoundedRect inst = RoundedRect.INST;
+		inst.bind();
+		inst.setThickness(radius - 1);
+		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
+		fillGradient(matrixStack, 7, left, top, right, bottom, colorStart, colorEnd);
+		inst.unBind();
+	}
+
 
 	public static void rectangle(MatrixStack matrixStack, int mode, Box2d box2d, int color)
 	{
@@ -77,13 +139,13 @@ public class GuiHelper extends DrawableHelper
 
 		//bottom left
 		bufferBuilder.vertex(matrix, box2d.getLeft(), box2d.getBottom(), 0.0F).color(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha())
-		             .next();
+				.next();
 		//bottom right
 		bufferBuilder.vertex(matrix, box2d.getRight(), box2d.getBottom(), 0.0F).color(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha())
-		             .next();
+				.next();
 		//top right
 		bufferBuilder.vertex(matrix, box2d.getRight(), box2d.getTop(), 0.0F).color(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha())
-		             .next();
+				.next();
 		//top left
 		bufferBuilder.vertex(matrix, box2d.getLeft(), box2d.getTop(), 0.0F).color(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha()).next();
 
@@ -95,7 +157,7 @@ public class GuiHelper extends DrawableHelper
 
 	}
 
-	public static void gradientLeftToRightRectangle(MatrixStack matrixStack, int mode, Box2d box2d, int colorStart, int colorEnd)
+	public static void gradientLeftToRightRectangle(MatrixStack matrixStack, int mode, int x, int y, int w, int h, int colorStart, int colorEnd)
 	{
 
 		Matrix4f matrix = matrixStack.peek().getModel();
@@ -110,17 +172,13 @@ public class GuiHelper extends DrawableHelper
 		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
 
 		//bottom left
-		bufferBuilder.vertex(matrix, box2d.getLeft(), box2d.getBottom(), 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha())
-		             .next();
+		bufferBuilder.vertex(matrix, x, y, 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha()).next();
 		//bottom right
-		bufferBuilder.vertex(matrix, box2d.getRight(), box2d.getBottom(), 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha())
-		             .next();
+		bufferBuilder.vertex(matrix, w, y, 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha()).next();
 		//top right
-		bufferBuilder.vertex(matrix, box2d.getRight(), box2d.getTop(), 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha())
-		             .next();
+		bufferBuilder.vertex(matrix, w, h, 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha()).next();
 		//top left
-		bufferBuilder.vertex(matrix, box2d.getLeft(), box2d.getTop(), 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha())
-		             .next();
+		bufferBuilder.vertex(matrix, x, h, 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha()).next();
 
 		bufferBuilder.end();
 		BufferRenderer.draw(bufferBuilder);
@@ -132,7 +190,7 @@ public class GuiHelper extends DrawableHelper
 	}
 
 	public static void drawBorderedRect(MatrixStack matrices, final float x, final float y, final float x2, final float y2, final float l1,
-			final int col1)
+	                                    final int col1)
 	{
 		//		drawRect(x, y, x2, y2, col2);
 		final float f = (col1 >> 24 & 0xFF) / 255.0f;
@@ -199,7 +257,7 @@ public class GuiHelper extends DrawableHelper
 	}
 
 	public static void fillGradient(MatrixStack matrixStack, int mode, float xStart, float yStart, float xEnd, float yEnd, int colorStart,
-			int colorEnd)
+	                                int colorEnd)
 	{
 		Matrix4f model = matrixStack.peek().getModel();
 		Vector4f col1 = colourHelper(colorStart);
@@ -299,7 +357,7 @@ public class GuiHelper extends DrawableHelper
 	}
 
 	public static void drawBox1(MatrixStack matrixStack, BufferBuilder buffer, float x1, float y1, float z1, float x2, float y2, float z2, float red,
-			float green, float blue, float alpha)
+	                            float green, float blue, float alpha)
 	{
 		Matrix4f matrix4f = matrixStack.peek().getModel();
 
