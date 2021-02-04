@@ -1,0 +1,202 @@
+package github.thesivlerecho.zeropoint.mixin;
+
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import github.thesivlerecho.zeropoint.ZeroPointClient;
+import github.thesivlerecho.zeropoint.gui.button.ClickableButton;
+import github.thesivlerecho.zeropoint.gui.overlay.watermark.Watermark;
+import github.thesivlerecho.zeropoint.util.RenderUtil;
+import javafx.scene.media.MediaPlayer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.*;
+import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.util.Util;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glEnable;
+
+@Mixin(HandledScreen.class)
+public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements ScreenHandlerProvider<T>
+{
+	private final HandledScreen<?> screen = (HandledScreen<?>) (Object) this;
+	@Shadow
+	protected int x;
+	@Shadow
+	protected int y;
+	@Shadow
+	protected int backgroundWidth;
+	@Shadow
+	protected int backgroundHeight;
+	private ArrayList<ClickableButton> menuButtons;
+
+	protected HandledScreenMixin(Text title)
+	{
+		super(title);
+	}
+
+	@Inject(method = "init", at = @At("RETURN"))
+	private void initNewButtons(CallbackInfo ci)
+	{
+		menuButtons = new ArrayList<>();
+
+		if (screen instanceof InventoryScreen)
+		{
+			AtomicInteger x = new AtomicInteger();
+			AtomicInteger y = new AtomicInteger();
+			ClientWorld world = MinecraftClient.getInstance().world;
+			ClientPlayerEntity player = MinecraftClient.getInstance().player;
+				/*	MinecraftClient.getInstance().interactionManager.interactBlock(player, world, Hand.MAIN_HAND,
+										new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), Direction.EAST, pos, false));*/
+			//			ZeroPointClient.BLOCK_POS_HASH.re
+//			ZeroPointClient.BLOCK_POS_HASH.forEach((pos, blockState) -> menuButtons
+//					.add(new ClickableButton(x.addAndGet(20), y.addAndGet(20), 10, 10, blockState.getBlock().getName().asString(),
+//							button -> MinecraftClient.getInstance().interactionManager.interactBlock(player, world, Hand.MAIN_HAND,
+//									new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), Direction.EAST, pos, false)))));
+			/*ZeroPointClient.BLOCK_POS.removeIf(blockPos -> player.getBlockPos().getSquaredDistance(blockPos) < 3);
+			ZeroPointClient.BLOCK_POS.forEach(
+					pos -> menuButtons.add(new ClickableButton(x.addAndGet(20), y.addAndGet(20), 10, 10, world.getBlockState(pos).getBlock().getName()
+					                                                                                          .asString(),
+							button -> MinecraftClient.getInstance().interactionManager.interactBlock(player, world, Hand.MAIN_HAND,
+									new BlockHitResult(new Vec3d(pos.getX(), pos.getY(), pos.getZ()), Direction.EAST, pos, false)))));*/
+		}
+
+	}
+
+	private long lastPressTime;
+
+	@Inject(method = "<init>", at = @At("RETURN"))
+	private void init(CallbackInfo ci)
+	{
+		//init last press time when the screen is opened
+		lastPressTime = -1;
+	}
+
+	private static MediaPlayer mediaPlayer;
+
+	@Inject(method = "render", at = @At("HEAD"))
+	private void newRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci)
+	{
+//		MinecraftClient.getInstance().getTextureManager().bindTexture(new Identifier(ZeroPointClient.MOD_ID, "textures/ui/test.png"));
+//		GuiHelper.drawTexturedQuad(matrices, 0, width, 0, height, 0, 1, 0, 1);
+/*		if (lastPressTime == -1)
+		{
+			new Thread(() ->
+			{
+				new JFXPanel();
+				Media media = new Media(new File("C:\\Users\\ryanb\\Music/e.mp3").toURI().toString());
+				mediaPlayer = new MediaPlayer(media);
+				mediaPlayer.onReadyProperty().set(() ->
+				{
+					final Image image = (Image) media.getMetadata().get("image");
+					final BufferedImage fxImage = SwingFXUtils.fromFXImage(image, null);
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+					try
+					{
+						ImageIO.write(fxImage, "png", outputStream);
+						byte[] res = outputStream.toByteArray();
+						InputStream inputStream = new ByteArrayInputStream(res);
+
+						final NativeImage read = NativeImage.read(*//*ByteBuffer.wrap(outputStream.toByteArray())*//*inputStream);
+						final Identifier x1 = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture("x", new NativeImageBackedTexture(read));
+
+						MinecraftClient.getInstance().getTextureManager().bindTexture(x1);
+						GuiHelper.drawTexturedQuad(matrices, 0, width, 0, height, 0, 1, 0, 1);
+
+					} catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+
+
+				});
+			}).start();
+			try
+			{
+				CompletableFuture.supplyAsync(() ->
+				{
+					new JFXPanel();
+					final Media media = new Media(new File("C:\\Users\\ryanb\\Music\\e.mp3").toURI().toString());
+					return new MediaPlayer(media);
+				}).thenAcceptAsync(mediaPlayer ->
+				{
+					mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+					mediaPlayer.play();
+				}, MinecraftClient.getInstance());
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+
+		}*/
+		ZeroPointClient.FONT.bindFontTexture();
+		RenderSystem.pushMatrix();
+//		RenderSystem.scalef(0.2f, 0.2f, 0.2f);
+
+		String name = "Test";
+		float pos = 0;
+		RenderUtil.enableGL2D();
+		glEnable(GL_TEXTURE_2D);
+//		GlStateManager.texParameter(3553, 10241, 9986);
+//		GlStateManager.texParameter(3553, 10240, 9728);
+		for (int i = 0; i < name.toCharArray().length; i++)
+		{
+			pos += ZeroPointClient.FONT.drawChar(name.toCharArray()[i], ((int) pos), 20);
+		}
+		RenderUtil.disableGL2D();
+
+		RenderSystem.popMatrix();
+		if (lastPressTime == -1)
+			lastPressTime = Util.getMeasuringTimeMs();
+//		1 tenth of a second
+		final double delay = 100d;
+//		this var will change from 0->1 over the delay time
+		final double tanh = Math.tanh((Util.getMeasuringTimeMs() - lastPressTime) / delay);
+//      reverse this so that we interpolate from 1->0
+		final double reverse = 1 - tanh;
+
+		final double slide = (y - 80) * -reverse;
+//		translate the matrix stack(seems to only move gui)
+//		matrices.translate(0, slide, 0);
+//
+
+		if (screen instanceof GenericContainerScreen)
+			RenderSystem.translatef(0, ((float) slide), 0);
+
+
+		if (screen instanceof InventoryScreen)
+		{
+			RenderSystem.scalef((float) tanh, (float) tanh, 1);
+		} else
+		{
+		}
+		if (screen instanceof CreativeInventoryScreen)
+		{
+			Watermark.render(matrices, this.x, this.y - 24, this.backgroundWidth, this.backgroundHeight + 48, this.width, this.height);
+		} else
+		{
+			Watermark.render(matrices, this.x, this.y, this.backgroundWidth, this.backgroundHeight, this.width, this.height);
+		}
+	}
+
+	@Inject(method = "mouseClicked", at = @At("TAIL"))
+	public void mouseClicked(double mouseX, double mouseY, int button,
+	                         CallbackInfoReturnable<Boolean> cir)
+	{
+		menuButtons.forEach(menuButton -> menuButton.mouseClicked(mouseX, mouseY, button));
+	}
+
+}

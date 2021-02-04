@@ -1,0 +1,17 @@
+{
+  "items/sword_draw": {
+    "sounds": [
+      "zero-point:items/sword_draw"
+    ]
+  },
+  "items/utility_draw": {
+    "sounds": [
+      "zero-point:items/utility_draw"
+    ]
+  },
+  "items/tool_draw": {
+    "sounds": [
+      "zero-point:items/tool_draw"
+    ]
+  }
+}

@@ -17,13 +17,25 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 
-
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
 }
+
+runClient {
+    if (project.hasProperty('mc_uuid')) {
+        args '--uuid', project.getProperty('mc_uuid')
+    }
+    if (project.hasProperty('mc_username')) {
+        args '--username', project.getProperty('mc_username')
+    }
+    if (project.hasProperty('mc_accessToken')) {
+        args '--accessToken', project.getProperty('mc_accessToken')
+    }
+}
+
 
 processResources {
     inputs.property "version", project.version

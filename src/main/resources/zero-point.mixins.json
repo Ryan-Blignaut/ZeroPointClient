@@ -1,12 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "me.thesilverecho.zeropoint.mixin",
+  "package": "github.thesivlerecho.zeropoint.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "AbstractButtonWidgetMixin",
     "AbstractClientPlayerEntityMixin",
     "BipedEntityModelMixin",
+    "BossBarHudMixin",
     "BufferBuilderStorageMixin",
     "CameraMixin",
     "GameRendererMixin",
@@ -14,13 +15,14 @@
     "InGameHudMixin",
     "ItemRendererMixin",
     "MerchantScreenMixin",
-    "mouseMixin",
+    "MouseMixin",
     "PlayerEntityRendererMixin",
     "PlayerListEntryMixin",
     "SplashScreenMixin",
     "SpriteAtlasTextureMixin",
     "TextRendererMixin",
     "TitleScreenMixin",
+    "ScreenMixin",
     "WorldRendererMixin"
   ],
   "client": [
