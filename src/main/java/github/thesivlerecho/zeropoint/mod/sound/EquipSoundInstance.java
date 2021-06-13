@@ -18,7 +18,7 @@ public class EquipSoundInstance extends MovingSoundInstance
 	@Override
 	public void tick()
 	{
-		if (!this.player.removed)
+		if (!this.player.isRemoved())
 		{
 			this.x = (float) this.player.getX();
 			this.y = (float) this.player.getY();

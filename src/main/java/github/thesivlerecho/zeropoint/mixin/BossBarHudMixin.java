@@ -46,7 +46,7 @@ public abstract class BossBarHudMixin extends DrawableHelper
 			for (ClientBossBar clientBossBar : this.bossBars.values())
 			{
 				int k = i / 2 - 160;
-				RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+				RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 				this.renderBossBarNew(matrices, k, j, clientBossBar);
 				Text text = clientBossBar.getName();
 				int m = this.client.textRenderer.getWidth(text);
@@ -67,11 +67,11 @@ public abstract class BossBarHudMixin extends DrawableHelper
 	private void renderBossBarNew(MatrixStack matrices, int x, int y, ClientBossBar bossBar)
 	{
 		float percent = bossBar.getPercent();
-		this.client.getTextureManager().bindTexture(BACK);
+		RenderSystem.setShaderTexture(0, BACK);
 		drawTexture(matrices, x, (int) ((float) y * 1.25F), 0, 0.0F, 0.0F, 320, 40, 40, 320);
-		this.client.getTextureManager().bindTexture(HEALTH);
+		RenderSystem.setShaderTexture(0, HEALTH);
 		drawTexture(matrices, x + 35, (int) ((float) y * 1.25F), 0, 0.0F, 0.0F, (int) (percent * 250.0F), 40, 40, 250);
-		this.client.getTextureManager().bindTexture(TOP);
+		RenderSystem.setShaderTexture(0, TOP);
 		drawTexture(matrices, x, (int) ((float) y * 1.25F), 0, 0.0F, 0.0F, 320, 40, 40, 320);
 
 

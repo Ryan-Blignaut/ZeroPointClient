@@ -2,7 +2,7 @@ package github.thesivlerecho.zeropoint.module.movement;
 
 import github.thesivlerecho.zeropoint.module.Module;
 import github.thesivlerecho.zeropoint.module.ModuleCategory;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import org.lwjgl.glfw.GLFW;
 
 public class Sprint extends Module

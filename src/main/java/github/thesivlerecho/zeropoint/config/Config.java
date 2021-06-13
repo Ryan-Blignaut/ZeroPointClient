@@ -34,6 +34,44 @@ public class Config
 			}
 	}
 
+	private void saveConfig()
+	{
+		try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file)))
+		{
+			file.createNewFile();
+			bufferedWriter.write(gson.toJson(config));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public void saveToFile(Object o)
+	{
+		loadToJson(o);
+		saveConfig();
+	}
+
+/*	public void save()
+	{
+		configObjects.forEach(this::loadToJson);
+		saveConfig();
+	}*/
+
+	public void register(Object o)
+	{
+
+		if (Arrays.stream(o.getClass().getDeclaredFields()).noneMatch(f -> f.isAnnotationPresent(ConfigOption.class)))
+			return;
+		loadToClass(o);
+
+	/*	if (Arrays.stream(o.getClass().getDeclaredFields()).noneMatch(field -> field.isAnnotationPresent(ConfigOption.class)))
+			return;
+		configObjects.add(o);
+		save();
+		loadToClass(o);*/
+	}
+
 	public void loadToJson(Object o)
 	{
 		Class<?> clazz = o.getClass();
@@ -49,33 +87,6 @@ public class Config
 				e.printStackTrace();
 			}
 		});
-	}
-
-	private void saveConfig()
-	{
-		try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file)))
-		{
-			file.createNewFile();
-			bufferedWriter.write(gson.toJson(config));
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	public void save()
-	{
-		configObjects.forEach(this::loadToJson);
-		saveConfig();
-	}
-
-	public void register(Object o)
-	{
-		if (Arrays.stream(o.getClass().getDeclaredFields()).noneMatch(field -> field.isAnnotationPresent(ConfigOption.class)))
-			return;
-		configObjects.add(o);
-		save();
-		loadToClass(o);
 	}
 
 	public void loadToClass(Object o)

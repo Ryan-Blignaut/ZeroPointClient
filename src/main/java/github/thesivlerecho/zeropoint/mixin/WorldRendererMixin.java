@@ -2,17 +2,12 @@ package github.thesivlerecho.zeropoint.mixin;
 
 import github.thesivlerecho.zeropoint.config.Settings;
 import github.thesivlerecho.zeropoint.mod.BlockOverlay;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
-import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -60,7 +55,7 @@ public abstract class WorldRendererMixin
 			method = "renderSky",
 			slice = @Slice(from = @At(ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getRainGradient(F)F")),
 			at = @At(shift = At.Shift.AFTER, ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lnet/minecraft/util/math/Quaternion;)V"))
-	private void renderExtras(MatrixStack ms, float partialTicks, CallbackInfo ci)
+	private void renderExtras(MatrixStack matrices, Matrix4f matrix4f, float f, Runnable runnable, CallbackInfo ci)
 	{
 //		if (isGogSky())
 //		{
@@ -76,14 +71,14 @@ public abstract class WorldRendererMixin
 //		StreamSupport.stream(world.getEntities().spliterator(), false).filter(entity -> entity instanceof PlayerEntity && entity.isAlive()).map(
 //				PlayerEntity.class::cast).forEach(playerEntity -> Esp.renderEsp(playerEntity, matrices, tickDelta, camera));
 
-		world.blockEntities.stream().filter(blockEntity -> blockEntity instanceof ChestBlockEntity).map(blockEntity -> ((ChestBlockEntity) blockEntity)).forEach(chestBlockEntity ->
+		/*world.blockEntities.stream().filter(blockEntity -> blockEntity instanceof ChestBlockEntity).map(blockEntity -> ((ChestBlockEntity) blockEntity)).forEach(chestBlockEntity ->
 		{
 //			esp(chestBlockEntity, chestBlockEntity.getPos().getX(), chestBlockEntity.getPos().getY(), chestBlockEntity.getPos().getZ());
-		});
+		});*/
 
 	}
 
-	private static void esp(ChestBlockEntity chestBlockEntity, double x, double y, double z)
+	/*private static void esp(ChestBlockEntity chestBlockEntity, double x, double y, double z)
 	{
 //if (chestBlockEntity.)
 		GL11.glPushMatrix();
@@ -105,7 +100,7 @@ public abstract class WorldRendererMixin
 
 		GL11.glColor4f(1, 0.0F, 0.0F, 0.3F);
 		EntityRenderDispatcher renderManager = MinecraftClient.getInstance().getEntityRenderDispatcher();
-		render(new Box(var9.x /*- renderManager.camera.getPos().x*/, var9.y /*- renderManager.camera.getPos().y*/, var9.z /*- renderManager.camera.getPos().z*/, var10.x /*- renderManager.camera.getPos().x*/, var10.y /*- renderManager.camera.getPos().y*/, var10.z /*- renderManager.camera.getPos().z*/));
+		render(new Box(var9.x *//*- renderManager.camera.getPos().x*//*, var9.y *//*- renderManager.camera.getPos().y*//*, var9.z *//*- renderManager.camera.getPos().z*//*, var10.x *//*- renderManager.camera.getPos().x*//*, var10.y *//*- renderManager.camera.getPos().y*//*, var10.z *//*- renderManager.camera.getPos().z*//*));
 		GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
 //		GlStateManager.Method1837();
 
@@ -118,8 +113,9 @@ public abstract class WorldRendererMixin
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glPopMatrix();
 
-	}
+	}*/
 
+/*
 	private static void render(Box box)
 	{
 		Tessellator var1 = Tessellator.getInstance();
@@ -194,5 +190,6 @@ public abstract class WorldRendererMixin
 		buffer.vertex(box.minY, box.minY, box.minZ).next();
 		var1.draw();
 	}
+*/
 
 }

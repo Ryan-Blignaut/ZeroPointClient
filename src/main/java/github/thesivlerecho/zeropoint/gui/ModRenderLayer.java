@@ -1,3 +1,4 @@
+/*
 package github.thesivlerecho.zeropoint.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -36,7 +37,9 @@ public class ModRenderLayer extends RenderLayer
 			{
 				for (int i = 0; i < ZeroPointClient.sprites.length; i++)
 				{
-					ZeroPointClient.sprites[i] = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier(ZeroPointClient.MOD_ID, "cosmic/cosmic_" + i))/*.apply(new Identifier(ZeroPointClient.MOD_ID, "cosmic/cosmic_" + i))*/;
+					ZeroPointClient.sprites[i] = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier(ZeroPointClient.MOD_ID, "cosmic/cosmic_" + i))*/
+/*.apply(new Identifier(ZeroPointClient.MOD_ID, "cosmic/cosmic_" + i))*//*
+;
 					active = true;
 					Sprite sprite = ZeroPointClient.sprites[i];
 //				Sprite sprite = MinecraftClient.getInstance().getSpriteAtlas(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).apply(new Identifier(ZeroPointClient.MOD_ID, "cosmic/cosmic_" + i));
@@ -75,3 +78,4 @@ public class ModRenderLayer extends RenderLayer
 		RenderSystem.matrixMode(5888);
 	}
 }
+*/

@@ -51,8 +51,8 @@ public class Radar
 					Colors.getColor(0, 195, 255) :
 					Colors.getColor(0, 195, 255)) : (Radar.mc.thePlayer.canEntityBeSeen(ent) ? Colors.getColor(255, 0, 0) : Colors.getColor(255, 255,
 					0));*/
-			float cos = (float) Math.cos((double) Radar.mc.player.yaw/*rotationYaw*/ * 0.017453292519943295);
-			float sin = (float) Math.sin((double) Radar.mc.player.yaw/*rotationYaw*/ * 0.017453292519943295);
+			float cos = (float) Math.cos((double) Radar.mc.player.renderYaw/*rotationYaw*/ * 0.017453292519943295);
+			float sin = (float) Math.sin((double) Radar.mc.player.renderYaw/*rotationYaw*/ * 0.017453292519943295);
 			float rotY = -posZ * cos - posX * sin;
 			float rotX = -posX * cos + posZ * sin;
 			if (rotY > (float) (size / 2 - 5))

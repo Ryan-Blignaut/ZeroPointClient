@@ -1,6 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.gui.ModRenderLayer;
+//import github.thesivlerecho.zeropoint.gui.ModRenderLayer;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.RenderLayer;
@@ -24,8 +24,8 @@ public abstract class BufferBuilderStorageMixin
 	@Inject(method = "<init>", at = @At("TAIL"))
 	protected void add(CallbackInfo ci)
 	{
-		entityBuilders.put(ModRenderLayer.POT_OVERLAY, new BufferBuilder(ModRenderLayer.POT_OVERLAY.getExpectedBufferSize()));
-		entityBuilders.put(ModRenderLayer.EXTREME_OVER, new BufferBuilder(ModRenderLayer.EXTREME_OVER.getExpectedBufferSize()));
+//		entityBuilders.put(ModRenderLayer.POT_OVERLAY, new BufferBuilder(ModRenderLayer.POT_OVERLAY.getExpectedBufferSize()));
+//		entityBuilders.put(ModRenderLayer.EXTREME_OVER, new BufferBuilder(ModRenderLayer.EXTREME_OVER.getExpectedBufferSize()));
 
 	}
 

@@ -121,16 +121,6 @@ public class FontLoader
 			ImageIO.write(image, "png", os);
 			InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
 			final NativeImage read = NativeImage.read(inputStream);
-//			GlStateManager.texParameter(3553, 0x2801, 0x2702);
-//			GlStateManager.texParameter(3553, 0x2800, 0x2600);
-//			9728
-//			0x2800
-//			GL_LINEAR  = 0x2601;
-//			GL_TEXTURE_MIN_FILTER = 0x2801,
-//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
 			final NativeImageBackedTexture nativeImageBackedTexture = new NativeImageBackedTexture(read);
 			nativeImageBackedTexture.setFilter(true, true);
 			return nativeImageBackedTexture;

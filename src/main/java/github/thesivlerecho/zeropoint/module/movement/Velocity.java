@@ -2,7 +2,7 @@ package github.thesivlerecho.zeropoint.module.movement;
 
 import github.thesivlerecho.zeropoint.module.Module;
 import github.thesivlerecho.zeropoint.module.ModuleCategory;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 

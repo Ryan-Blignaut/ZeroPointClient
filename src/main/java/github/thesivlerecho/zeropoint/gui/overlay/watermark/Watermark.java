@@ -1,14 +1,17 @@
 package github.thesivlerecho.zeropoint.gui.overlay.watermark;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import github.thesivlerecho.zeropoint.ZeroPointClient;
-import github.thesivlerecho.zeropoint.gui.Icon;
+import github.thesivlerecho.zeropoint.render.DrawingUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import org.lwjgl.opengl.GL11;
 
 public class Watermark
 {
 
-	private static final Icon icon = new Icon(new Identifier(ZeroPointClient.MOD_ID, "textures/ui/overlay.png"), 0, 0, 1, 1, true, false);
+	private static final Identifier IDENTIFIER = new Identifier(ZeroPointClient.MOD_ID, "textures/ui/overlay.png");
+
 
 	public static void render(MatrixStack matrices, int x, int y, int backgroundWidth, int backgroundHeight, int width, int height)
 	{
@@ -16,11 +19,15 @@ public class Watermark
 		switch (ZeroPointClient.WATERMARK_TYPE)
 		{
 			case TOP:
-				ZeroPointClient.DRAWING_HELPER.drawIcon(matrices, icon, x + backgroundWidth / 2f - 60, y - 27 - 5, x + backgroundWidth / 2f + 45, y - 1);
+				RenderSystem.setShaderTexture(0,IDENTIFIER);
+				DrawingUtil.drawTextureBlend(matrices, x + backgroundWidth / 2f - 60, y - 27 - 5, 45, y - 1, GL11.GL_NEAREST);
+//				ZeroPointClient.DRAWING_HELPER.drawIcon(matrices, icon, x + backgroundWidth / 2f - 60, y - 27 - 5, x + backgroundWidth / 2f + 45, y - 1);
 				break;
 			case BOTTOM:
-				ZeroPointClient.DRAWING_HELPER.drawIcon(matrices, icon, (backgroundWidth - icon.getLeft()) / 2f, backgroundHeight - icon.getTop(),
-						(backgroundWidth - icon.getRight()), backgroundHeight - icon.getBottom());
+//				RenderSystem.setShaderTexture(0,IDENTIFIER);
+//				DrawingUtil.drawTextureBlend(matrices, x + backgroundWidth / 2f - 60, y - 27 - 5, 45, y - 1, GL11.GL_NEAREST);
+//				ZeroPointClient.DRAWING_HELPER.drawIcon(matrices, icon, (backgroundWidth - icon.getLeft()) / 2f, backgroundHeight - icon.getTop(),
+//				                                        (backgroundWidth - icon.getRight()), backgroundHeight - icon.getBottom());
 				break;
 			case LEFT:
 

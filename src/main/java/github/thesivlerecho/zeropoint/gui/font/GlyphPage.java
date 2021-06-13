@@ -1,3 +1,4 @@
+/*
 package github.thesivlerecho.zeropoint.gui.font;
 
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -159,6 +160,7 @@ public class GlyphPage
 	}
 
 
+*/
 /*	public void drawGlyph(BufferBuilder builder,char ch, float x, float y, int r, int g, int b, int a)
 	{
 
@@ -181,7 +183,8 @@ public class GlyphPage
 		builder.vertex(x, y + height, 0).color(r, g, b, a).texture(pageX, pageY + pageHeight).next();
 		builder.vertex(x + width, y + height, 0).color(r, g, b, a).texture(pageX + pageWidth, pageY + pageHeight).next();
 		builder.vertex(x + width, y, 0).color(r, g, b, a).texture(pageX + pageWidth, pageY).next();
-	}*/
+	}*//*
+
 
 
 	public float drawChar(char ch, float x, float y)
@@ -285,3 +288,4 @@ public class GlyphPage
 		}
 	}
 }
+*/

@@ -1,13 +1,9 @@
 package github.thesivlerecho.zeropoint.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -33,7 +29,7 @@ public class DrawingHelper
 		right += drawingX;
 		bottom += drawingY;
 
-		bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 		bufferBuilder.vertex(left, bottom, 0).color(r, g, b, a).texture(icon.getLeft(), icon.getBottom()).next();
 		bufferBuilder.vertex(right, bottom, 0).color(r, g, b, a).texture(icon.getRight(), icon.getBottom()).next();
 		bufferBuilder.vertex(right, top, 0).color(r, g, b, a).texture(icon.getRight(), icon.getTop()).next();
@@ -55,7 +51,7 @@ public class DrawingHelper
 		right += drawingX;
 		bottom += drawingY;
 
-		bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 		bufferBuilder.vertex(model, left, bottom, 0).color(r, g, b, a).texture(icon.getLeft(), icon.getBottom()).next();
 		bufferBuilder.vertex(model, right, bottom, 0).color(r, g, b, a).texture(icon.getRight(), icon.getBottom()).next();
 		bufferBuilder.vertex(model, right, top, 0).color(r, g, b, a).texture(icon.getRight(), icon.getTop()).next();
@@ -78,7 +74,7 @@ public class DrawingHelper
 		right += drawingX;
 		bottom += drawingY;
 
-		bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 		bufferBuilder.vertex(model, left, bottom, 0).color(col1.getRed(), col1.getBlue(), col1.getRed(), col1.getAlpha()).texture(icon.getLeft(),
 				icon.getBottom()).next();
 		bufferBuilder.vertex(model, right, bottom, 0).color(col1.getRed(), col1.getBlue(), col1.getRed(), col1.getAlpha()).texture(icon.getRight(),

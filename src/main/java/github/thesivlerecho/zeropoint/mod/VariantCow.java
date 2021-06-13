@@ -1,3 +1,4 @@
+/*
 package github.thesivlerecho.zeropoint.mod;
 
 import github.thesivlerecho.zeropoint.ZeroPointClient;
@@ -19,3 +20,4 @@ public class VariantCow extends CowEntityRenderer
 		return new Identifier(ZeroPointClient.MOD_ID, "textures/test.png");
 	}
 }
+*/

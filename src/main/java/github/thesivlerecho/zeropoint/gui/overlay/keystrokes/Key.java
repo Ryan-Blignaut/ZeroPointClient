@@ -1,80 +1,85 @@
 package github.thesivlerecho.zeropoint.gui.overlay.keystrokes;
 
-import github.thesivlerecho.zeropoint.gui.GuiHelper;
-import github.thesivlerecho.zeropoint.shader.CircleShader;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.BufferBuilder;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.util.math.MatrixStack;
-import org.lwjgl.opengl.GL11;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 import java.awt.*;
 
+import static github.thesivlerecho.zeropoint.config.Settings.KEY_STROKES_OFFSET;
+
 public class Key extends BaseKey
 {
-	private final KeyBinding keyBinding;
-	private boolean wasPressed;
-	private long lastPressTime;
+
 
 	public Key(KeyBinding keyBinding, int xOffset, int yOffset)
 	{
-		super(xOffset, yOffset);
-		this.keyBinding = keyBinding;
-		this.wasPressed = true;
-		this.lastPressTime = 0;
-
+		this(keyBinding, xOffset, yOffset, 22, 22);
 	}
 
-	@Override
-	protected void renderKey(MatrixStack matrixStack)
+	public Key(KeyBinding keyBinding, int xOffset, int yOffset, int width, int height)
 	{
+		super(xOffset, yOffset, width, height, keyBinding);
+	}
 
-		float x = 122;
-		float y = 122;
-		boolean isPressed = keyBinding.isPressed();
-		if (wasPressed != isPressed)
-		{
-			wasPressed = isPressed;
-			lastPressTime = System.currentTimeMillis();
-		}
 
-		double delay = 900d;
+	@Override
+	protected void renderFg(MatrixStack matrixStack, boolean isPressed)
+	{
+		final Text name = getName(keyBinding);
+		final float charWidth = minecraft.textRenderer.getWidth(name) / 2f;
 
-		int radius;
-		int col;
-		double tanh = Math.tanh((System.currentTimeMillis() - lastPressTime) / delay);
-
-		Color colorDown = new Color(0, 255, 255, 150);
-		Color colorUp = new Color(255, 175, 175, 150);
-
-		if (isPressed)
-		{
-			radius = (int) (tanh * 20);
-			col = GuiHelper.lerp(colorDown, colorUp, tanh).getRGB();
-		} else
-		{
-			radius = 0;//(int) (20 - tanh * 20);
-			col = GuiHelper.lerp(colorUp, colorDown, tanh).getRGB();
-		}
-
-		GuiHelper.fill(matrixStack, 7, x + xOffset, y + yOffset, x + xOffset + 22, y + yOffset + 22, col);
-//		GuiHelper.clipStart(x + xOffset, y + yOffset, 22, 22);
-		CircleShader.INST.bind();
-		CircleShader.INST.setCenter(x + xOffset + 11, y + yOffset + 11);
-		CircleShader.INST.setRadius(radius);
-		GuiHelper.fill(matrixStack, 7, x + xOffset, y + yOffset, x + xOffset + 22, y + yOffset + 22, col);
-		CircleShader.INST.unBind();
-//		GuiHelper.fillEllipse(matrixStack, GL11.GL_TRIANGLE_FAN, (x + xOffset + 11), (y + yOffset + 11), radius, radius,
-//				new Color(255, 255, 255, 100).getRGB());
-//		GuiHelper.clipEnd();
-
-		int keyWidth = 22;
-
-		float xPos = x + xOffset + 8;
-		float yPos = y + yOffset + 8;
-
-		minecraft.textRenderer.draw(matrixStack, keyBinding.getBoundKeyLocalizedText().asString().toUpperCase(), (int) xPos, (int) yPos,
+		final Tessellator instance = Tessellator.getInstance();
+		final BufferBuilder buffer = instance.getBuffer();
+//		RenderSystem.pushMatrix();
+//		RenderSystem.enableBlend();
+//		RenderSystem.disableTexture();
+//		RenderSystem.defaultBlendFunc();
+//		RenderSystem.shadeModel(GL11.GL_SMOOTH);
+//		buffer.begin(GL11.GL_TRIANGLES, VertexFormats.POSITION_COLOR);
+		final float x = KEY_STROKES_OFFSET.x;
+		final float y = KEY_STROKES_OFFSET.y;
+//		buffer.vertex(matrixStack.peek().getModel(), x+xOffset/2f, y + yOffset / 2f, 0.0f).color(255, 0, 0, 255).next();
+//		buffer.vertex(matrixStack.peek().getModel(), x + xOffset, y + yOffset + height / 2f, 0.0f).color(0, 255, 0, 255).next();
+//		buffer.vertex(matrixStack.peek().getModel(), x + xOffset + width, y + yOffset + height / 2f, 0.0f).color(0, 0, 255, 255).next();
+//		instance.draw();
+//		RenderSystem.shadeModel(GL11.GL_FLAT);
+//		RenderSystem.enableTexture();
+//		RenderSystem.disableBlend();
+//		RenderSystem.popMatrix();
+		minecraft.textRenderer.draw(matrixStack, name, x + xOffset + width / 2f - charWidth / 2f, y + yOffset + height / 2f - minecraft.textRenderer.fontHeight / 2f,
 				Color.white.getRGB());
-		GL11.glLineWidth(1);
+	}
 
+
+	protected final Text getName(KeyBinding keyBinding)
+	{
+		if (true)
+		{
+			String letter = null;
+
+			final GameOptions keys = MinecraftClient.getInstance().options;
+
+
+			if (keyBinding.equals(keys.keyForward))
+				letter = "▲";
+			else if (keyBinding.equals(keys.keyBack))
+				letter = "▼";
+			else if (keyBinding.equals(keys.keyLeft))
+				letter = "◀";
+			else if (keyBinding.equals(keys.keyRight))
+				letter = "▶";
+
+			if (letter != null)
+				return new LiteralText(letter);
+		}
+
+		return new LiteralText(keyBinding.getBoundKeyLocalizedText().asString().toUpperCase());
 	}
 
 }

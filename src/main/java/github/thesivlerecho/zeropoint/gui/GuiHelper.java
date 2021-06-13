@@ -2,26 +2,17 @@ package github.thesivlerecho.zeropoint.gui;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import github.thesivlerecho.zeropoint.shader.FeatheredRect;
-import github.thesivlerecho.zeropoint.shader.RoundBoardedRect;
-import github.thesivlerecho.zeropoint.shader.RoundedRect;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector4f;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
 import java.awt.*;
-
-import static org.lwjgl.opengl.GL11.GL_QUAD_STRIP;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLE_STRIP;
 
 public class GuiHelper extends DrawableHelper
 {
@@ -33,8 +24,8 @@ public class GuiHelper extends DrawableHelper
 
 	public static void drawTexturedRect(float x, float y, float width, float height, float uMin, float uMax, float vMin, float vMax, int filter)
 	{
-		GlStateManager.enableTexture();
-		GlStateManager.enableBlend();
+		GlStateManager._enableTexture();
+		GlStateManager._enableBlend();
 		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, filter);
@@ -42,7 +33,7 @@ public class GuiHelper extends DrawableHelper
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
-		buffer.begin(7, VertexFormats.POSITION_TEXTURE);
+		buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 		buffer.vertex(x, y + height, 0.0D).texture(uMin, vMax).next();
 		buffer.vertex(x + width, y + height, 0.0D).texture(uMax, vMax).next();
 		buffer.vertex(x + width, y, 0.0D).texture(uMax, vMin).next();
@@ -52,32 +43,32 @@ public class GuiHelper extends DrawableHelper
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-		GlStateManager.disableBlend();
+		GlStateManager._disableBlend();
 	}
 
 
-	public static void gradientTopToBottomRectangle(MatrixStack matrixStack, int mode, Box2d box2d, int colorStart, int colorEnd)
-	{
-		Matrix4f matrix = matrixStack.peek().getModel();
-		CustomColor col1 = new CustomColor(colorStart);
-		CustomColor col2 = new CustomColor(colorEnd);
-		RenderSystem.disableTexture();
-		RenderSystem.enableBlend();
-		RenderSystem.disableAlphaTest();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.shadeModel(GL11.GL_SMOOTH);
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
-
-		topToBottomGradient(matrix, box2d, col1, col2);
-
-		bufferBuilder.end();
-		BufferRenderer.draw(bufferBuilder);
-
-		RenderSystem.shadeModel(GL11.GL_FLAT);
-		RenderSystem.disableBlend();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.enableTexture();
-	}
+//	public static void gradientTopToBottomRectangle(MatrixStack matrixStack, int mode, Box2d box2d, int colorStart, int colorEnd)
+//	{
+//		Matrix4f matrix = matrixStack.peek().getModel();
+//		CustomColor col1 = new CustomColor(colorStart);
+//		CustomColor col2 = new CustomColor(colorEnd);
+//		RenderSystem.disableTexture();
+//		RenderSystem.enableBlend();
+////		RenderSystem.disableAlphaTest();
+//		RenderSystem.defaultBlendFunc();
+//		RenderSystem.shadeModel(GL11.GL_SMOOTH);
+//		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+//
+//		topToBottomGradient(matrix, box2d, col1, col2);
+//
+//		bufferBuilder.end();
+//		BufferRenderer.draw(bufferBuilder);
+//
+//		RenderSystem.shadeModel(GL11.GL_FLAT);
+//		RenderSystem.disableBlend();
+//		RenderSystem.enableAlphaTest();
+//		RenderSystem.enableTexture();
+//	}
 
 	private static void topToBottomGradient(Matrix4f matrix, Box2d box2d, CustomColor col1, CustomColor col2)
 	{
@@ -98,53 +89,53 @@ public class GuiHelper extends DrawableHelper
 
 	public static void drawFeatheredRect(MatrixStack matrixStack, float left, float top, float right, float bottom, float thickness, int col)
 	{
-		FeatheredRect inst = FeatheredRect.INST;
-		inst.bind();
-		inst.setThickness(thickness);
-		inst.setInnerRect(left + thickness, top + thickness, right - thickness, bottom - thickness);
-		fill(matrixStack, (int) left, (int) top, (int) right, (int) bottom, col);
-		inst.unBind();
+//		FeatheredRect inst = FeatheredRect.INST;
+//		inst.bind();
+//		inst.setThickness(thickness);
+//		inst.setInnerRect(left + thickness, top + thickness, right - thickness, bottom - thickness);
+//		fill(matrixStack, (int) left, (int) top, (int) right, (int) bottom, col);
+//		inst.unBind();
 	}
 
 	public static void drawRoundedRect(MatrixStack matrixStack, float left, float top, float right, float bottom, float radius, int color)
 	{
-		RoundedRect inst = RoundedRect.INST;
-		inst.bind();
-		inst.setThickness(radius /*- 1*/);
-		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
-		fillCustom(matrixStack, left, top, right, bottom, color);
-		inst.unBind();
+//		RoundedRect inst = RoundedRect.INST;
+//		inst.bind();
+//		inst.setThickness(radius /*- 1*/);
+//		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
+//		fillCustom(matrixStack, left, top, right, bottom, color);
+//		inst.unBind();
 	}
 
 	public static void drawRoundedBoardedRect(MatrixStack matrixStack, float left, float top, float right, float bottom, float radius, int color)
 	{
-		RoundBoardedRect inst = RoundBoardedRect.INST;
-		inst.bind();
-		inst.setThickness(radius /*- 1*/);
-		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
-		fillCustom(matrixStack, left, top, right, bottom, color);
-		inst.unBind();
+//		RoundBoardedRect inst = RoundBoardedRect.INST;
+//		inst.bind();
+//		inst.setThickness(radius /*- 1*/);
+//		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
+//		fillCustom(matrixStack, left, top, right, bottom, color);
+//		inst.unBind();
 	}
 
 
 	public static void drawGradientRoundedRect(MatrixStack matrixStack, float left, float top, float right, float bottom, float radius, int colorStart, int colorEnd)
 	{
-		RoundedRect inst = RoundedRect.INST;
-		inst.bind();
-		inst.setThickness(radius);
-		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
-		fillGradientCustom(matrixStack, left, top, right, bottom, colorStart, colorEnd);
-		inst.unBind();
+//		RoundedRect inst = RoundedRect.INST;
+//		inst.bind();
+//		inst.setThickness(radius);
+//		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
+//		fillGradientCustom(matrixStack, left, top, right, bottom, colorStart, colorEnd);
+//		inst.unBind();
 	}
 
 	public static void drawGradientBoardedRect(MatrixStack matrixStack, float left, float top, float right, float bottom, float radius, int colorStart, int colorEnd)
 	{
-		RoundBoardedRect inst = RoundBoardedRect.INST;
-		inst.bind();
-		inst.setThickness(radius);
-		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
-		fillGradientCustom(matrixStack, left, top, right, bottom, colorStart, colorEnd);
-		inst.unBind();
+//		RoundBoardedRect inst = RoundBoardedRect.INST;
+//		inst.bind();
+//		inst.setThickness(radius);
+//		inst.setInnerRect(left + radius, top + radius, right - radius, bottom - radius);
+//		fillGradientCustom(matrixStack, left, top, right, bottom, colorStart, colorEnd);
+//		inst.unBind();
 	}
 
 	private static void fillCustom(MatrixStack matrixStack, float x1, float y1, float x2, float y2, int color)
@@ -173,7 +164,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(matrix, x1, y2, 0.0F).color(g, h, k, f).next();
 		bufferBuilder.vertex(matrix, x2, y2, 0.0F).color(g, h, k, f).next();
 		bufferBuilder.vertex(matrix, x2, y1, 0.0F).color(g, h, k, f).next();
@@ -193,7 +184,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
 		//bottom left
 		bufferBuilder.vertex(matrix, box2d.getLeft(), box2d.getBottom(), 0.0F).color(col.getRed(), col.getGreen(), col.getBlue(), col.getAlpha())
@@ -215,37 +206,37 @@ public class GuiHelper extends DrawableHelper
 
 	}
 
-	public static void gradientLeftToRightRectangle(MatrixStack matrixStack, int mode, int x, int y, int w, int h, int colorStart, int colorEnd)
-	{
-
-		Matrix4f matrix = matrixStack.peek().getModel();
-		CustomColor col1 = new CustomColor(colorStart);
-		CustomColor col2 = new CustomColor(colorEnd);
-
-		RenderSystem.disableTexture();
-		RenderSystem.enableBlend();
-		RenderSystem.disableAlphaTest();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.shadeModel(GL11.GL_SMOOTH);
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
-
-		//bottom left
-		bufferBuilder.vertex(matrix, x, y, 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha()).next();
-		//bottom right
-		bufferBuilder.vertex(matrix, w, y, 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha()).next();
-		//top right
-		bufferBuilder.vertex(matrix, w, h, 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha()).next();
-		//top left
-		bufferBuilder.vertex(matrix, x, h, 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha()).next();
-
-		bufferBuilder.end();
-		BufferRenderer.draw(bufferBuilder);
-
-		RenderSystem.shadeModel(GL11.GL_FLAT);
-		RenderSystem.disableBlend();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.enableTexture();
-	}
+//	public static void gradientLeftToRightRectangle(MatrixStack matrixStack, int mode, int x, int y, int w, int h, int colorStart, int colorEnd)
+//	{
+//
+//		Matrix4f matrix = matrixStack.peek().getModel();
+//		CustomColor col1 = new CustomColor(colorStart);
+//		CustomColor col2 = new CustomColor(colorEnd);
+//
+//		RenderSystem.disableTexture();
+//		RenderSystem.enableBlend();
+////		RenderSystem.disableAlphaTest();
+//		RenderSystem.defaultBlendFunc();
+////		RenderSystem.shadeModel(GL11.GL_SMOOTH);
+//		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+//
+//		//bottom left
+//		bufferBuilder.vertex(matrix, x, y, 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha()).next();
+//		//bottom right
+//		bufferBuilder.vertex(matrix, w, y, 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha()).next();
+//		//top right
+//		bufferBuilder.vertex(matrix, w, h, 0.0F).color(col2.getRed(), col2.getGreen(), col2.getBlue(), col2.getAlpha()).next();
+//		//top left
+//		bufferBuilder.vertex(matrix, x, h, 0.0F).color(col1.getRed(), col1.getGreen(), col1.getBlue(), col1.getAlpha()).next();
+//
+//		bufferBuilder.end();
+//		BufferRenderer.draw(bufferBuilder);
+//
+//		RenderSystem.shadeModel(GL11.GL_FLAT);
+//		RenderSystem.disableBlend();
+//		RenderSystem.enableAlphaTest();
+//		RenderSystem.enableTexture();
+//	}
 
 	public static void drawBorderedRect(MatrixStack matrices, final float x, final float y, final float x2, final float y2, final float l1,
 	                                    final int col1)
@@ -266,7 +257,7 @@ public class GuiHelper extends DrawableHelper
 		GL11.glLineWidth(l1);
 		//		GL11.glBegin(1);
 
-		bufferBuilder.begin(GL11.GL_LINES, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(matrices.peek().getModel(), x, y, 0).color(1, 1, 1, 1).next();
 		bufferBuilder.vertex(matrices.peek().getModel(), x, y2, 0).color(1, 1, 1, 1).next();
 		bufferBuilder.vertex(matrices.peek().getModel(), x2, y2, 0).color(1, 1, 1, 1).next();
@@ -303,7 +294,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(matrix, x, h, 0.0F).color(r, g, b, a).next();
 		bufferBuilder.vertex(matrix, w, h, 0.0F).color(r, g, b, a).next();
 		bufferBuilder.vertex(matrix, w, y, 0.0F).color(r, g, b, a).next();
@@ -314,27 +305,27 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.disableBlend();
 	}
 
-	public static void fillGradientCustom(MatrixStack matrixStack, float xStart, float yStart, float xEnd, float yEnd, int colorStart, int colorEnd)
-	{
-		Matrix4f model = matrixStack.peek().getModel();
-		Vector4f col1 = colourHelper(colorStart);
-		Vector4f col2 = colourHelper(colorEnd);
-		RenderSystem.disableTexture();
-		RenderSystem.enableBlend();
-		RenderSystem.disableAlphaTest();
-		RenderSystem.defaultBlendFunc();
-		RenderSystem.shadeModel(GL11.GL_SMOOTH);
-		bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
-		bufferBuilder.vertex(model, xEnd, yStart, 0).color(col1.getX(), col1.getY(), col1.getZ(), col1.getW()).next();
-		bufferBuilder.vertex(model, xStart, yStart, 0).color(col1.getX(), col1.getY(), col1.getZ(), col1.getW()).next();
-		bufferBuilder.vertex(model, xStart, yEnd, 0).color(col2.getX(), col2.getY(), col2.getZ(), col2.getW()).next();
-		bufferBuilder.vertex(model, xEnd, yEnd, 0).color(col2.getX(), col2.getY(), col2.getZ(), col2.getW()).next();
-		tessellator.draw();
-		RenderSystem.shadeModel(GL11.GL_FLAT);
-		RenderSystem.disableBlend();
-		RenderSystem.enableAlphaTest();
-		RenderSystem.enableTexture();
-	}
+//	public static void fillGradientCustom(MatrixStack matrixStack, float xStart, float yStart, float xEnd, float yEnd, int colorStart, int colorEnd)
+//	{
+//		Matrix4f model = matrixStack.peek().getModel();
+//		Vector4f col1 = colourHelper(colorStart);
+//		Vector4f col2 = colourHelper(colorEnd);
+//		RenderSystem.disableTexture();
+//		RenderSystem.enableBlend();
+////		RenderSystem.disableAlphaTest();
+//		RenderSystem.defaultBlendFunc();
+//		RenderSystem.shadeModel(GL11.GL_SMOOTH);
+//		bufferBuilder.begin(7, VertexFormats.POSITION_COLOR);
+//		bufferBuilder.vertex(model, xEnd, yStart, 0).color(col1.getX(), col1.getY(), col1.getZ(), col1.getW()).next();
+//		bufferBuilder.vertex(model, xStart, yStart, 0).color(col1.getX(), col1.getY(), col1.getZ(), col1.getW()).next();
+//		bufferBuilder.vertex(model, xStart, yEnd, 0).color(col2.getX(), col2.getY(), col2.getZ(), col2.getW()).next();
+//		bufferBuilder.vertex(model, xEnd, yEnd, 0).color(col2.getX(), col2.getY(), col2.getZ(), col2.getW()).next();
+//		tessellator.draw();
+//		RenderSystem.shadeModel(GL11.GL_FLAT);
+//		RenderSystem.disableBlend();
+//		RenderSystem.enableAlphaTest();
+//		RenderSystem.enableTexture();
+//	}
 
 	public static void fill(MatrixStack matrixStack, int mode, float x1, float y1, float x2, float y2, int color)
 	{
@@ -358,7 +349,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(model, x1, y2, 0.0F).color(cVec.getX(), cVec.getY(), cVec.getZ(), cVec.getW()).next();
 		bufferBuilder.vertex(model, x2, y2, 0.0F).color(cVec.getX(), cVec.getY(), cVec.getZ(), cVec.getW()).next();
 		bufferBuilder.vertex(model, x2, y1, 0.0F).color(cVec.getX(), cVec.getY(), cVec.getZ(), cVec.getW()).next();
@@ -371,17 +362,17 @@ public class GuiHelper extends DrawableHelper
 	public static void drawTexturedQuad(MatrixStack matrixStack, float x0, float x1, float y0, float y1, float u0, float u1, float v0, float v1)
 	{
 		Matrix4f model = matrixStack.peek().getModel();
-		bufferBuilder.begin(7, VertexFormats.POSITION_TEXTURE);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 		bufferBuilder.vertex(model, x0, y1, 0).texture(u0, v1).next();
 		bufferBuilder.vertex(model, x1, y1, 0).texture(u1, v1).next();
 		bufferBuilder.vertex(model, x1, y0, 0).texture(u1, v0).next();
 		bufferBuilder.vertex(model, x0, y0, 0).texture(u0, v0).next();
 		bufferBuilder.end();
-		RenderSystem.enableAlphaTest();
+//		RenderSystem.enableAlphaTest();
 		BufferRenderer.draw(bufferBuilder);
 	}
 
-	public static void drawOutline(MatrixStack matrixStack, int minXIn, int minYIn)
+	/*public static void drawOutline(MatrixStack matrixStack, int minXIn, int minYIn)
 	{
 
 		RenderSystem.pushMatrix();
@@ -412,7 +403,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.popMatrix();
 
 	}
-
+*/
 	public static void drawBox1(MatrixStack matrixStack, BufferBuilder buffer, float x1, float y1, float z1, float x2, float y2, float z2, float red,
 	                            float green, float blue, float alpha)
 	{
@@ -466,7 +457,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(/*Rotation3.identity().getMatrix(),*/ x1, y1, 0.0F).color(g, h, k, f).next();
 		bufferBuilder.vertex(/*Rotation3.identity().getMatrix(),*/ x2, y2, 0.0F).color(g, h, k, f).next();
 
@@ -479,7 +470,7 @@ public class GuiHelper extends DrawableHelper
 	public static void drawTorus(MatrixStack matrixStack, float startAngle, float sizeAngle, float draws, float inner, float outer)
 	{
 		Matrix4f matrix4f = matrixStack.peek().getModel();
-		bufferBuilder.begin(GL11.GL_QUAD_STRIP, VertexFormats.POSITION);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
 		float draws1 = draws * (sizeAngle / 360F);
 		for (int i = 0; i <= draws1; i++)
 		{
@@ -502,7 +493,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		for (float w = 0; w <= 360; w += 0.01)
 		{
 			bufferBuilder.vertex(/*Rotation3.identity().getMatrix(),*/ (float) (x + radius * Math.cos(Math.toRadians(w))),
@@ -525,7 +516,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		bufferBuilder.vertex(x, y, 0).color(g, h, k, f).next();
 		for (int i = 0; i <= 360; ++i)
 		{
@@ -557,7 +548,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(mode, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 
 		for (float i = 0; i <= percent; i += 0.01)
 		{
@@ -606,7 +597,7 @@ public class GuiHelper extends DrawableHelper
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
-		bufferBuilder.begin(GL_QUAD_STRIP, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		for (int q = 0; q < 5; ++q)
 		{
 
@@ -648,7 +639,7 @@ public class GuiHelper extends DrawableHelper
 	public static void drawOctagonRectFrame(MatrixStack matrixStack, float left, float top, float right, float bottom, float bevel, int color)
 	{
 		RenderSystem.disableTexture();
-		bufferBuilder.begin(GL11.GL_TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+		bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
 		Vector4f col = colourHelper(color);
 		Matrix4f model = matrixStack.peek().getModel();
 		bufferBuilder.vertex(model, left, bottom - bevel, 0).color(col.getX(), col.getY(), col.getZ(), col.getW()).next();
@@ -691,4 +682,43 @@ public class GuiHelper extends DrawableHelper
 				(int) (color1.getBlue() * double3 + color2.getBlue() * (1.0 - double3)),
 				(int) (color1.getAlpha() * double3 + color2.getAlpha() * (1.0 - double3)));
 	}
+
+
+	public static Color lerp(CustomColor color1, CustomColor color2, double double3)
+	{
+		if (Double.isNaN(double3) || double3 < 0.0)
+		{
+			double3 = 0.0;
+		}
+		if (double3 > 1.0)
+		{
+			double3 = 1.0;
+		}
+		return new Color((int) (color1.getRed() * double3 + color2.getRed() * (1.0 - double3)),
+				(int) (color1.getGreen() * double3 + color2.getGreen() * (1.0 - double3)),
+				(int) (color1.getBlue() * double3 + color2.getBlue() * (1.0 - double3)),
+				(int) (color1.getAlpha() * double3 + color2.getAlpha() * (1.0 - double3)));
+	}
+
+
+	public static Color lerp(int c1, int c2, double double3)
+	{
+		CustomColor color1 = new CustomColor(c1);
+		CustomColor color2 = new CustomColor(c2);
+
+		if (Double.isNaN(double3) || double3 < 0.0)
+		{
+			double3 = 0.0;
+		}
+		if (double3 > 1.0)
+		{
+			double3 = 1.0;
+		}
+		return new Color((int) (color1.getRed() * double3 + color2.getRed() * (1.0 - double3)),
+				(int) (color1.getGreen() * double3 + color2.getGreen() * (1.0 - double3)),
+				(int) (color1.getBlue() * double3 + color2.getBlue() * (1.0 - double3)),
+				(int) (color1.getAlpha() * double3 + color2.getAlpha() * (1.0 - double3)));
+	}
+
+
 }

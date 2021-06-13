@@ -1,3 +1,4 @@
+/*
 package github.thesivlerecho.zeropoint.gui;
 
 import net.minecraft.client.render.BufferBuilder;
@@ -62,14 +63,16 @@ public class RenderUtilOld
 
 
 
-		/*drawRect(matrixStack, x, y1, x + lineSize, y1 + width, color);
+		*/
+/*drawRect(matrixStack, x, y1, x + lineSize, y1 + width, color);
 		drawRect(matrixStack, x, y1 - lineSize, x + width, y1, color);
 
 		drawRect(matrixStack, x1 - lineSize, y, x1, y + width, Color.red.getRGB());
 		drawRect(matrixStack, x1, y, x1 + width, y + lineSize, Color.red.getRGB());
 
 		drawRect(matrixStack, x1 - lineSize, y1, x1, y1 + width, Color.red.getRGB());
-		drawRect(matrixStack, x1, y1-lineSize, x1+width , y1, Color.red.getRGB());*/
+		drawRect(matrixStack, x1, y1-lineSize, x1+width , y1, Color.red.getRGB());*//*
+
 
 		//		drawRect(matrixStack, x1, y, x1 - lineSize, 2, color);
 		//		drawRect(matrixStack, x1, y, 2, y + lineSize, color);
@@ -141,7 +144,8 @@ public class RenderUtilOld
 		disableGL2D();
 	}
 
-	/*public static void draw2DCorner(Entity e, double posX, double posY, double posZ, int color)
+	*/
+/*public static void draw2DCorner(Entity e, double posX, double posY, double posZ, int color)
 	{
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(posX, posY, posZ);
@@ -341,5 +345,7 @@ public class RenderUtilOld
 		GL11.glDisable(2848);
 		GL11.glEnable(3553);
 		GL11.glDisable(3042);
-	}*/
+	}*//*
+
 }
+*/

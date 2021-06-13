@@ -37,8 +37,8 @@ public class SlideOut extends Screen
 		super.init();
 		TextFieldWidget a = new TextFieldWidget(MinecraftClient.getInstance().textRenderer, 0, 40, 20, 20, new LiteralText("A"));
 
-		this.addButton(a);
-		this.addButton(new ButtonWidget(0, 10, 20, 20, new LiteralText("skin"), e ->
+		this.addDrawable(a);
+		this.addDrawable(new ButtonWidget(0, 10, 20, 20, new LiteralText("skin"), e ->
 		{
 			System.out.println(a.getText());
 			try (InputStream inputStream = new URL(a.getText()).openStream())

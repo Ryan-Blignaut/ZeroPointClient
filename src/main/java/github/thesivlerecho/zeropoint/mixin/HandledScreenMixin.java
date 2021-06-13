@@ -1,12 +1,8 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import github.thesivlerecho.zeropoint.ZeroPointClient;
+import github.thesivlerecho.zeropoint.Transition;
 import github.thesivlerecho.zeropoint.gui.button.ClickableButton;
 import github.thesivlerecho.zeropoint.gui.overlay.watermark.Watermark;
-import github.thesivlerecho.zeropoint.util.RenderUtil;
-import javafx.scene.media.MediaPlayer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.*;
@@ -26,8 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glEnable;
+//import javafx.scene.media.MediaPlayer;
 
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen implements ScreenHandlerProvider<T>
@@ -85,7 +80,7 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
 		lastPressTime = -1;
 	}
 
-	private static MediaPlayer mediaPlayer;
+//	private static MediaPlayer mediaPlayer;
 
 	@Inject(method = "render", at = @At("HEAD"))
 	private void newRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci)
@@ -142,29 +137,29 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
 			}
 
 		}*/
-		ZeroPointClient.FONT.bindFontTexture();
-		RenderSystem.pushMatrix();
+//		ZeroPointClient.font.bindFontTexture();
+//		RenderSystem.pushMatrix();
 //		RenderSystem.scalef(0.2f, 0.2f, 0.2f);
-
+		matrices.push();
 		String name = "Test";
 		float pos = 0;
-		RenderUtil.enableGL2D();
-		glEnable(GL_TEXTURE_2D);
+//		glEnable(GL_TEXTURE_2D);
 //		GlStateManager.texParameter(3553, 10241, 9986);
 //		GlStateManager.texParameter(3553, 10240, 9728);
 		for (int i = 0; i < name.toCharArray().length; i++)
 		{
-			pos += ZeroPointClient.FONT.drawChar(name.toCharArray()[i], ((int) pos), 20);
+//			pos += ZeroPointClient.font.drawChar(name.toCharArray()[i], ((int) pos), 20);
 		}
-		RenderUtil.disableGL2D();
 
-		RenderSystem.popMatrix();
+		matrices.pop();
+//		RenderSystem.popMatrix();
 		if (lastPressTime == -1)
 			lastPressTime = Util.getMeasuringTimeMs();
 //		1 tenth of a second
-		final double delay = 100d;
+		final double delay = 1000d;
 //		this var will change from 0->1 over the delay time
-		final double tanh = Math.tanh((Util.getMeasuringTimeMs() - lastPressTime) / delay);
+		final double tanh = Transition.easeInElastic(Math.tanh((Util.getMeasuringTimeMs() - lastPressTime) / delay));
+//		final double tanh = Math.tanh((Util.getMeasuringTimeMs() - lastPressTime) / delay);
 //      reverse this so that we interpolate from 1->0
 		final double reverse = 1 - tanh;
 
@@ -174,12 +169,13 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
 //
 
 		if (screen instanceof GenericContainerScreen)
-			RenderSystem.translatef(0, ((float) slide), 0);
-
+//			RenderSystem.translatef(0, ((float) slide), 0);
+			matrices.translate(0, (float) slide, 0);
 
 		if (screen instanceof InventoryScreen)
 		{
-			RenderSystem.scalef((float) tanh, (float) tanh, 1);
+			matrices.scale((float) tanh, (float) tanh, 1);
+//			RenderSystem.scalef((float) tanh, (float) tanh, 1);
 		} else
 		{
 		}

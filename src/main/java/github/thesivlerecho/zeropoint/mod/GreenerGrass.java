@@ -2,10 +2,10 @@ package github.thesivlerecho.zeropoint.mod;
 
 
 import com.google.common.collect.ImmutableList;
-import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 
+import java.awt.*;
 import java.util.List;
 
 public class GreenerGrass
@@ -21,13 +21,15 @@ public class GreenerGrass
 
 	private static void register(List<Block> blocks)
 	{
-		blocks.forEach(block -> ColorProviderRegistry.BLOCK.register((state, world, pos, tintIndex) -> getGreenerColour(block), block));
+//		blocks.forEach(block -> ColorProviderRegistryImpl.BLOCK.register((state, world, pos, tintIndex) -> getGreenerColour(block), block));
 	}
 
 	private static int getGreenerColour(Block block)
 	{
-		int color = block.getDefaultMaterialColor().color;
+		int color = block.getDefaultMapColor().color;
 		int r = color >> 16 & 0xFF, g = color >> 8 & 0xFF, b = color & 0xFF;
-		return (Math.max(0, Math.min(0xFF, r - 30)) << 16) + Math.max(0, Math.min(0xFF, g + 30) << 8) + Math.max(0, Math.min(0xFF, b - 30));
+		return Color.HSBtoRGB((float) ((System.currentTimeMillis()) % 2000) / 2000.0F, 0.8F, 0.8F);
+
+		//(Math.max(0, Math.min(0xFF, r - 30)) << 16) + Math.max(0, Math.min(0xFF, g + 30) << 8) + Math.max(0, Math.min(0xFF, b - 30));
 	}
 }

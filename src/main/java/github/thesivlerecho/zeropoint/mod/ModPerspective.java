@@ -20,9 +20,9 @@ public class ModPerspective
 			if (perspectiveEnabled = KeyBinds.PERSPECTIVE.isPressed() && !held)
 			{
 				held = true;
-				cameraPitch = m.player.pitch;
-				cameraYaw = m.player.yaw;
-				m.options.setPerspective(net.minecraft.client.options.Perspective.THIRD_PERSON_BACK);
+				cameraPitch = m.player.getPitch();
+				cameraYaw = m.player.getYaw();
+				m.options.setPerspective(net.minecraft.client.option.Perspective.THIRD_PERSON_BACK);
 			}
 		} else
 		{
@@ -30,20 +30,21 @@ public class ModPerspective
 			{
 				perspectiveEnabled = !perspectiveEnabled;
 
-				cameraPitch = m.player.pitch;
-				cameraYaw = m.player.yaw;
+				cameraPitch = m.player.getPitch();
+				;
+				cameraYaw = m.player.getYaw();
 
-				m.options.setPerspective(perspectiveEnabled ? net.minecraft.client.options.Perspective.THIRD_PERSON_BACK : net.minecraft.client.options.Perspective.FIRST_PERSON);
+				m.options.setPerspective(perspectiveEnabled ? net.minecraft.client.option.Perspective.THIRD_PERSON_BACK : net.minecraft.client.option.Perspective.FIRST_PERSON);
 			}
 		}
 
 		if (!perspectiveEnabled && held)
 		{
 			held = false;
-			m.options.setPerspective(net.minecraft.client.options.Perspective.FIRST_PERSON);
+			m.options.setPerspective(net.minecraft.client.option.Perspective.FIRST_PERSON);
 		}
 
-		if (perspectiveEnabled && m.options.getPerspective() != net.minecraft.client.options.Perspective.THIRD_PERSON_BACK)
+		if (perspectiveEnabled && m.options.getPerspective() != net.minecraft.client.option.Perspective.THIRD_PERSON_BACK)
 			perspectiveEnabled = false;
 	}
 

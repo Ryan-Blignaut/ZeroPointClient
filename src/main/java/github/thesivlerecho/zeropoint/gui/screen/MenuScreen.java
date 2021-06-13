@@ -1,6 +1,5 @@
 package github.thesivlerecho.zeropoint.gui.screen;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import github.thesivlerecho.zeropoint.config.Settings;
 import github.thesivlerecho.zeropoint.gui.GuiHelper;
 import github.thesivlerecho.zeropoint.gui.button.CheckBoxButton;
@@ -11,7 +10,6 @@ import net.minecraft.client.gl.PostProcessShader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.math.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -24,15 +22,13 @@ public class MenuScreen extends Screen
 	private final ArrayList<CheckBoxButton> menuButtonList = new ArrayList<>();
 	private final MenuPage menuPage = new MenuPage();
 	PostProcessShader blurShaderHorz = null;
+	private boolean keyDown;
 	private boolean dragging;
 	private int lastX;
 	private int lastY;
-	private boolean keyDown;
-//	private ListBox listBox = new ListBox();
 	private float menuYOffset;
-
-//	BlurShader blurShader = new BlurShader("x", "f");
 	private float menuXOffset;
+
 	private Framebuffer blurOutputHorz;
 	private Framebuffer blurOutputVert;
 	private int lastBgBlurFactor = 6;
@@ -79,7 +75,7 @@ public class MenuScreen extends Screen
 		GuiHelper.fill(matrixStack, GL11.GL_QUADS, menuXOffset + (x + 2) / scale, menuYOffset + (y + 2) / scale, menuXOffset + (w - 2) / scale, menuYOffset + (h - 2) / scale, new Color(33, 33, 39).getRGB());
 	}
 
-	private void blur(MatrixStack matrixStack)
+/*	private void blur(MatrixStack matrixStack)
 	{
 //		Matrix4f model = matrixStack.peek().getModel();
 		int width = MinecraftClient.getInstance().getWindow().getFramebufferWidth();
@@ -154,7 +150,7 @@ public class MenuScreen extends Screen
 		GlStateManager.color4f(1f, 1f, 1f, 1f);
 		GuiHelper.drawTexturedRect(x, y, blurWidth, blurHeight, uMin, uMax, vMin, vMax, GL11.GL_LINEAR);
 		blurOutputHorz.endRead();
-	}
+	}*/
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)

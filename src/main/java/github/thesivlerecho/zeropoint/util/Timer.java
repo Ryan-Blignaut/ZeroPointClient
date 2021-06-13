@@ -6,7 +6,7 @@ public class Timer
 
 	public Timer()
 	{
-		time = -1;
+		time = System.currentTimeMillis();
 	}
 
 	public boolean passed(double ms)
