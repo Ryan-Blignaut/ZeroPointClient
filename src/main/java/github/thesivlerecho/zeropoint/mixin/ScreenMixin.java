@@ -5,7 +5,9 @@ import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.thesivlerecho.zeropoint.ZeroPointClient;
 import github.thesivlerecho.zeropoint.config.Settings;
-import github.thesivlerecho.zeropoint.gui.GuiHelper;
+import github.thesivlerecho.zeropoint.event.EventManager;
+import github.thesivlerecho.zeropoint.event.events.RenderTooltipEvent;
+import github.thesivlerecho.zeropoint.gui.old.GuiHelper;
 import github.thesivlerecho.zeropoint.render.DrawingUtil;
 import github.thesivlerecho.zeropoint.render.widget.Component2d;
 import net.minecraft.block.ShulkerBoxBlock;
@@ -13,6 +15,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -56,16 +59,19 @@ public abstract class ScreenMixin
 	private int borderTop = Settings.TOOLTIP_BORDER_TOP_COLOUR;
 	private int borderBottom = Settings.TOOLTIP_BORDER_BOTTOM_COLOUR;
 
-	@Shadow
-	protected TextRenderer textRenderer;
-	@Shadow
-	public int width;
-	@Shadow
-	public int height;
+	@Shadow protected TextRenderer textRenderer;
+	@Shadow public int width;
+	@Shadow public int height;
+	@Shadow protected ItemRenderer itemRenderer;
 
 
-	@Shadow
-	protected ItemRenderer itemRenderer;
+	@Inject(method = "renderTooltipFromComponents", at = @At(value = "HEAD"), cancellable = true)
+	private void renderCustomTooltip123(MatrixStack matrices, List<TooltipComponent> components, int x, int y, CallbackInfo ci)
+	{
+		RenderTooltipEvent renderTooltipEvent = new RenderTooltipEvent(matrices, components, x, y, textRenderer, itemRenderer, width, height, ci);
+		EventManager.call(renderTooltipEvent);
+	}
+
 
 	private List<ItemStack> stacks = new ArrayList<>();
 	private ItemStack stack;
@@ -333,10 +339,10 @@ public abstract class ScreenMixin
 		DrawingUtil.drawRectWithShader(component2d, 3, matrixStack);
 //		GuiHelper.drawRoundedRect(matrixStack, tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER, tooltipY + tooltipHeight + V_BORDER, 3, background);
 		GuiHelper.drawGradientBoardedRect(matrixStack,
-		                                  tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER,
-		                                  tooltipY + tooltipHeight + V_BORDER, 3,
-		                                  borderTop,
-		                                  borderBottom);
+				tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER,
+				tooltipY + tooltipHeight + V_BORDER, 3,
+				borderTop,
+				borderBottom);
 
 		RenderSystem.enableDepthTest();
 		RenderSystem.disableBlend();

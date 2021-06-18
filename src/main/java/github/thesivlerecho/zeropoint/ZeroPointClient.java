@@ -3,14 +3,18 @@ package github.thesivlerecho.zeropoint;
 import com.google.common.collect.Maps;
 import github.thesivlerecho.zeropoint.config.Config;
 import github.thesivlerecho.zeropoint.config.Settings;
-import github.thesivlerecho.zeropoint.gui.DrawingHelper;
-import github.thesivlerecho.zeropoint.gui.overlay.keystrokes.KeystrokesRenderer;
-import github.thesivlerecho.zeropoint.gui.overlay.watermark.WatermarkType;
-import github.thesivlerecho.zeropoint.gui.screen.PositioningScreen;
-import github.thesivlerecho.zeropoint.mod.GreenerGrass;
-import github.thesivlerecho.zeropoint.mod.ModPerspective;
-import github.thesivlerecho.zeropoint.mod.ToolEquip;
-import github.thesivlerecho.zeropoint.mod.sound.Sounds;
+import github.thesivlerecho.zeropoint.event.EventManager;
+import github.thesivlerecho.zeropoint.event.events.GameStartEvent;
+import github.thesivlerecho.zeropoint.event.events.TickEvent;
+import github.thesivlerecho.zeropoint.gui.old.DrawingHelper;
+import github.thesivlerecho.zeropoint.gui.old.overlay.keystrokes.KeystrokesRenderer;
+import github.thesivlerecho.zeropoint.gui.old.overlay.watermark.WatermarkType;
+import github.thesivlerecho.zeropoint.gui.old.screen.PositioningScreen;
+import github.thesivlerecho.zeropoint.mod.ClientModManager;
+import github.thesivlerecho.zeropoint.mod.impl.GreenerGrass;
+import github.thesivlerecho.zeropoint.mod.impl.ModPerspective;
+import github.thesivlerecho.zeropoint.mod.impl.ToolEquip;
+import github.thesivlerecho.zeropoint.mod.impl.sound.Sounds;
 import github.thesivlerecho.zeropoint.module.Module;
 import github.thesivlerecho.zeropoint.module.ModuleManager;
 import github.thesivlerecho.zeropoint.registration.KeyBinds;
@@ -55,6 +59,8 @@ public class ZeroPointClient implements ClientModInitializer
 
 		if (player == null || world == null)
 			return;
+		EventManager.call(new TickEvent());
+
 		KeystrokesRenderer.getInstance().updateKeystrokes();
 		ModuleManager.ACTIVE_MODULES.forEach(Module::onTick);
 		ModuleManager.ACTIVE_MODULES.forEach(Module::keyPressed);
@@ -68,22 +74,13 @@ public class ZeroPointClient implements ClientModInitializer
 		ModPerspective.tickPerspective();
 	}
 
-//	private static void accept(Map<UUID, User> userMap)
-//	{
-//		if (userMap != null)
-//			PLAYER_COSMETICS = userMap;
-//		else PLAYER_COSMETICS = Collections.emptyMap();
-//	}
-
-	/*	private static void registerSprites(SpriteAtlasTexture spriteAtlasTexture, ClientSpriteRegistryCallback.Registry registry)
-		{
-			for (int i = 0; i < ZeroPointClient.sprites.length; i++)
-				registry.register(new Identifier(ZeroPointClient.MOD_ID, "cosmic/cosmic_" + i));
-		}*/
-
 	@Override
 	public void onInitializeClient()
 	{
+		ClientModManager.registerMods();
+		ClientModManager.getClientMods().forEach(EventManager::register);
+		EventManager.call(new GameStartEvent());
+
 		Settings.create();
 		ShaderManager.initShaders();
 		KeyBinds.registerKeys();

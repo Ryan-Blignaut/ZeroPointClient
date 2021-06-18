@@ -18,13 +18,13 @@ public class BuiltChunkStorageMixin
 	private void setOrigin(RenderLayer renderLayer, MatrixStack matrices, double d, double y, double f, Matrix4f matrix4f, CallbackInfo ci)
 	{
 
-		if (time == -1)
-			time = System.currentTimeMillis();
-
-		long timeDif = System.currentTimeMillis() - time;
-
-
-		matrices.translate(0, 256 - y - (Math.tanh(timeDif / 2000f) * 256 - y), 0);
+//		if (time == -1)
+//			time = System.currentTimeMillis();
+//
+//		long timeDif = System.currentTimeMillis() - time;
+//
+//
+//		matrices.translate(0, 256 - y - (Math.tanh(timeDif / 2000f) * 256 - y), 0);
 
 	}
 

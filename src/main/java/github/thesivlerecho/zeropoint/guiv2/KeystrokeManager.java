@@ -1,51 +1,45 @@
 package github.thesivlerecho.zeropoint.guiv2;
 
-import com.google.common.collect.Lists;
-import github.thesivlerecho.zeropoint.gui.overlay.keystrokes.BaseKey;
-import github.thesivlerecho.zeropoint.gui.overlay.keystrokes.Key;
-import github.thesivlerecho.zeropoint.gui.overlay.keystrokes.SpaceKey;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class KeystrokeManager
 {
 
-	private static ArrayList<BaseKey> keyStream;
-	private static KeystrokeManager renderer;
+	private static final CopyOnWriteArrayList<KeystrokeBase> keys = new CopyOnWriteArrayList<>();
+	private static KeystrokeManager manager;
 
-	private KeystrokeManager()
+	public KeystrokeManager()
 	{
 		final GameOptions options = MinecraftClient.getInstance().options;
-
-
-		keyStream = Lists.newArrayList(
-				new Key(options.keyForward, 22, 0),
-				new Key(options.keyBack, 22, 22),
-				new Key(options.keyLeft, 0, 22),
-				new Key(options.keyRight, 44, 22),
-//				new MouseKey(options.keyAttack, 2, 26),
-//				new MouseKey(options.keyUse, 2, 26),
-				new SpaceKey(options.keyJump, 0, 44, 66, 22)
-		);
+		final int keyDimensions = KeystrokeBase.BASE_KEY_SIZE;
+		keys.add(new KeystrokeBase(options.keyForward, keyDimensions, 0));
+		keys.add(new KeystrokeBase(options.keyBack, keyDimensions, keyDimensions));
+		keys.add(new KeystrokeBase(options.keyLeft, 0, keyDimensions));
+		keys.add(new KeystrokeBase(options.keyRight, keyDimensions * 2, keyDimensions));
+		keys.add(new KeystrokeBase(options.keyAttack, 0, keyDimensions * 2, keyDimensions * 3 / 2, keyDimensions));
+		keys.add(new KeystrokeBase(options.keyUse, keyDimensions * 3 / 2, keyDimensions * 2, keyDimensions * 3 / 2, keyDimensions));
+		keys.add(new KeystrokeBase(options.keyJump, 0, keyDimensions * 3, keyDimensions * 3, keyDimensions));
 	}
 
 	public static KeystrokeManager getInstance()
 	{
-		if (renderer == null) renderer = new KeystrokeManager();
-		return renderer;
+		if (manager == null)
+			manager = new KeystrokeManager();
+		return manager;
 	}
 
 	public void renderKeystrokes(MatrixStack m)
 	{
-		keyStream.forEach(key -> key.renderKey(m));
+		keys.forEach(key -> key.renderKey(m));
 	}
 
 	public void updateKeystrokes()
 	{
-		keyStream.forEach(BaseKey::updateKey);
+		keys.forEach(KeystrokeBase::updateKey);
 	}
 
 

@@ -1,6 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.gui.screen.SlideOut;
+import github.thesivlerecho.zeropoint.gui.old.screen.SlideOut;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;

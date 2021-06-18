@@ -1,8 +1,8 @@
 package github.thesivlerecho.zeropoint.mixin;
 
 import github.thesivlerecho.zeropoint.Transition;
-import github.thesivlerecho.zeropoint.gui.button.ClickableButton;
-import github.thesivlerecho.zeropoint.gui.overlay.watermark.Watermark;
+import github.thesivlerecho.zeropoint.gui.old.button.ClickableButton;
+import github.thesivlerecho.zeropoint.gui.old.overlay.watermark.Watermark;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.*;
@@ -85,61 +85,6 @@ public abstract class HandledScreenMixin<T extends ScreenHandler> extends Screen
 	@Inject(method = "render", at = @At("HEAD"))
 	private void newRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci)
 	{
-//		MinecraftClient.getInstance().getTextureManager().bindTexture(new Identifier(ZeroPointClient.MOD_ID, "textures/ui/test.png"));
-//		GuiHelper.drawTexturedQuad(matrices, 0, width, 0, height, 0, 1, 0, 1);
-/*		if (lastPressTime == -1)
-		{
-			new Thread(() ->
-			{
-				new JFXPanel();
-				Media media = new Media(new File("C:\\Users\\ryanb\\Music/e.mp3").toURI().toString());
-				mediaPlayer = new MediaPlayer(media);
-				mediaPlayer.onReadyProperty().set(() ->
-				{
-					final Image image = (Image) media.getMetadata().get("image");
-					final BufferedImage fxImage = SwingFXUtils.fromFXImage(image, null);
-					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-					try
-					{
-						ImageIO.write(fxImage, "png", outputStream);
-						byte[] res = outputStream.toByteArray();
-						InputStream inputStream = new ByteArrayInputStream(res);
-
-						final NativeImage read = NativeImage.read(*//*ByteBuffer.wrap(outputStream.toByteArray())*//*inputStream);
-						final Identifier x1 = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture("x", new NativeImageBackedTexture(read));
-
-						MinecraftClient.getInstance().getTextureManager().bindTexture(x1);
-						GuiHelper.drawTexturedQuad(matrices, 0, width, 0, height, 0, 1, 0, 1);
-
-					} catch (IOException e)
-					{
-						e.printStackTrace();
-					}
-
-
-				});
-			}).start();
-			try
-			{
-				CompletableFuture.supplyAsync(() ->
-				{
-					new JFXPanel();
-					final Media media = new Media(new File("C:\\Users\\ryanb\\Music\\e.mp3").toURI().toString());
-					return new MediaPlayer(media);
-				}).thenAcceptAsync(mediaPlayer ->
-				{
-					mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-					mediaPlayer.play();
-				}, MinecraftClient.getInstance());
-			} catch (Exception e)
-			{
-				e.printStackTrace();
-			}
-
-		}*/
-//		ZeroPointClient.font.bindFontTexture();
-//		RenderSystem.pushMatrix();
-//		RenderSystem.scalef(0.2f, 0.2f, 0.2f);
 		matrices.push();
 		String name = "Test";
 		float pos = 0;

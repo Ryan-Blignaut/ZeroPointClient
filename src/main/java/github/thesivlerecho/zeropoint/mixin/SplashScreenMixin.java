@@ -83,7 +83,7 @@ public abstract class SplashScreenMixin extends Overlay
 
 //		TODO re add
 
-//		ci.cancel();
+//		callbackInfo.cancel();
 //		int i = MinecraftClient.getInstance().getWindow().getScaledWidth();
 //		int j = MinecraftClient.getInstance().getWindow().getScaledHeight();
 //		long l = Util.getMeasuringTimeMs();

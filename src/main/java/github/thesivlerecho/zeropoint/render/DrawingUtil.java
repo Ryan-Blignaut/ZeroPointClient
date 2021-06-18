@@ -3,15 +3,16 @@ package github.thesivlerecho.zeropoint.render;
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.thesivlerecho.zeropoint.render.shader.ShaderManager;
 import github.thesivlerecho.zeropoint.render.shader.ZeroPointShader;
+import github.thesivlerecho.zeropoint.render.shader.programs.BlurPostprocessShaderSize;
 import github.thesivlerecho.zeropoint.render.shader.programs.CircleShader;
+import github.thesivlerecho.zeropoint.render.shader.programs.ContrastPostprocessShader;
 import github.thesivlerecho.zeropoint.render.shader.programs.RoundedRectangleShader;
-import github.thesivlerecho.zeropoint.render.shader.programs.TestShader;
 import github.thesivlerecho.zeropoint.render.widget.Component2d;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 
-import java.awt.*;
 import java.util.function.Consumer;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -38,9 +39,23 @@ public class DrawingUtil
 		disableGL2D();
 	}
 
+
+	public static void drawBasicBox(MatrixStack matrixStack, Component2d component2d)
+	{
+		enableGL2D();
+		BufferRenderer.draw(initComponent(matrixStack, component2d));
+		disableGL2D();
+	}
+
 	public static void drawBoxWithShader(MatrixStack matrixStack, Component2d component2d)
 	{
 		enableGL2D();
+		BufferRenderer.postDraw(initComponent(matrixStack, component2d));
+		disableGL2D();
+	}
+
+	private static BufferBuilder initComponent(MatrixStack matrixStack, Component2d component2d)
+	{
 		final Matrix4f matrix4f = matrixStack.peek().getModel();
 		/*
 		 * 4 3
@@ -54,48 +69,52 @@ public class DrawingUtil
 		builder.vertex(matrix4f, component2d.getW(), component2d.getY(), zIndex).color(col.getR(), col.getG(), col.getB(), col.getA()).next();
 		builder.vertex(matrix4f, component2d.getX(), component2d.getY(), zIndex).color(col.getR(), col.getG(), col.getB(), col.getA()).next();
 		builder.end();
-		BufferRenderer.postDraw(BUFFER);
-		disableGL2D();
+		return builder;
+	}
+
+	public static void drawRectWithShader(Component2d component2d, float radius, float feather, MatrixStack matrixStack)
+	{
+		drawCustomRectWithShader(component2d, radius, feather, comp -> DrawingUtil.drawBoxWithShader(matrixStack, comp));
 	}
 
 	public static void drawRectWithShader(Component2d component2d, float radius, MatrixStack matrixStack)
 	{
-		drawCustomRectWithShader(component2d, radius, comp -> DrawingUtil.drawBoxWithShader(matrixStack, comp));
+		drawCustomRectWithShader(component2d, radius, 1, comp -> DrawingUtil.drawBoxWithShader(matrixStack, comp));
 	}
 
-	public static void drawCustomRectWithShader(Component2d component2d, float radius, Consumer<Component2d> consumer)
+	public static void drawCustomRectWithShader(Component2d component2d, float radius, float feather, Consumer<Component2d> consumer)
 	{
-
 		final RoundedRectangleShader shader = ShaderManager.getShader(RoundedRectangleShader.class, ZeroPointShader.ROUND_RECT);
 		shader.bind();
-		shader.setThickness(radius);
+		shader.setThickness(radius, Math.min(radius, feather));
 		shader.setRectangle(component2d.getX() + radius, component2d.getY() + radius, component2d.getW() - radius, component2d.getH() - radius);
 		consumer.accept(component2d);
 		shader.unBind();
-
 	}
 
-
-	public static void drawCustomRectWithShader(Component2d component2d, float radius, MatrixStack matrixStack, int x, int y, int width, int height)
+	public static void drawBlurWithShader(Component2d component2d, MatrixStack matrixStack)
 	{
-		final ColorUtil.ColorHolder col = ColorUtil.getColor(Color.RED.getRGB());
-		final TestShader shader = ShaderManager.getShader(TestShader.class, ZeroPointShader.TEST);
-		shader.bind();
-//		shader.setThickness(radius);
-//		shader.setRectangle(x, y, x + width, y + height);
-//		GL20.glUseProgram(1);
-		final BufferBuilder builder = Tessellator.getInstance().getBuffer();
-		builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-		builder.vertex(matrixStack.peek().getModel(), x, y + height, zIndex).color(col.getR(), col.getG(), col.getB(), col.getA()).next();
-		builder.vertex(matrixStack.peek().getModel(), x + width, y + height, zIndex).color(col.getR(), col.getG(), col.getB(), col.getA()).next();
-		builder.vertex(matrixStack.peek().getModel(), x + width, y, zIndex).color(col.getR(), col.getG(), col.getB(), col.getA()).next();
-		builder.vertex(matrixStack.peek().getModel(), x, y, zIndex).color(col.getR(), col.getG(), col.getB(), col.getA()).next();
-		builder.end();
-		BufferRenderer.postDraw(BUFFER);
-		shader.unBind();
-
+		drawCustomBlurWithShader(component2d, comp -> DrawingUtil.drawBoxWithShader(matrixStack, comp));
 	}
 
+	public static void drawCustomBlurWithShader(Component2d component2d, Consumer<Component2d> consumer)
+	{
+		final BlurPostprocessShaderSize shader = ShaderManager.getShader(BlurPostprocessShaderSize.class, ZeroPointShader.BLUR2);
+		shader.setFramebuffer(MinecraftClient.getInstance().getFramebuffer(), (int) component2d.getWidth(), (int) component2d.getHeight());
+		shader.bind();
+		consumer.accept(component2d);
+		shader.unBind();
+	}
+
+
+	public static void drawWithShader(Component2d component2d, Consumer<Component2d> consumer)
+	{
+		final ContrastPostprocessShader shader = ShaderManager.getShader(ContrastPostprocessShader.class, ZeroPointShader.CONTRAST_POST_P);
+//		shader.bind();
+//		consumer.accept(component2d);
+//		shader.unBind();
+		shader.draw();
+	}
 
 	public static void drawCircleShader(Component2d component2d, float radius, float feather, Consumer<Component2d> consumer)
 	{
@@ -111,7 +130,7 @@ public class DrawingUtil
 	{
 		final RoundedRectangleShader shader = ShaderManager.getShader(RoundedRectangleShader.class, ZeroPointShader.ROUND_RECT);
 		shader.bind();
-		shader.setThickness(radius);
+		shader.setThickness(radius, radius);
 		shader.setRectangle(x + radius, y + radius, x + width - radius, y + height - radius);
 		drawBasicBox(matrixStack, x, y, width, height, colour);
 		shader.unBind();
@@ -142,7 +161,7 @@ public class DrawingUtil
 		RenderSystem.enableTexture();
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		BUFFER.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
 		BUFFER.vertex(matrix4f, x, y + height, zIndex).texture(uMin, vMax).next();
 		BUFFER.vertex(matrix4f, x + width, y + height, zIndex).texture(uMax, vMax).next();
@@ -159,7 +178,6 @@ public class DrawingUtil
 	{
 		glDisable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);
-//		glDisable(GL_TEXTURE_2D);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glDepthMask(true);
 		glEnable(GL_LINE_SMOOTH);
@@ -169,12 +187,17 @@ public class DrawingUtil
 
 	private static void disableGL2D()
 	{
-//		glEnable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 		glEnable(GL_DEPTH_TEST);
 		glDisable(GL_LINE_SMOOTH);
 		glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
 		glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
+	}
+
+	public static double getAnimationState(double animation, double finalState, double speed)
+	{
+		float add = (float) (0.055 * speed);
+		return animation < finalState ? (Math.min(animation + (double) add, finalState)) : (Math.max(animation - (double) add, finalState));
 	}
 
 	public static int getZIndex()
@@ -186,4 +209,5 @@ public class DrawingUtil
 	{
 		DrawingUtil.zIndex = zIndex;
 	}
+
 }

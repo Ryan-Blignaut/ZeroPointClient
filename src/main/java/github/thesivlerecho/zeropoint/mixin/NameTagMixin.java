@@ -125,7 +125,7 @@ public abstract class NameTagMixin
 //	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0))
 //	private void render(
 //			MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer,
-//			LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci)
+//			LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo callbackInfo)
 //	{
 //		StreamSupport.stream(MinecraftClient.getInstance().world.getEntities().spliterator(), false).filter(
 //				entity -> entity instanceof PlayerEntity && entity.isAlive()).map(PlayerEntity.class::cast).forEach(

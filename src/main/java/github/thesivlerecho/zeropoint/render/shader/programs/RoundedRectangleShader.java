@@ -10,9 +10,9 @@ public class RoundedRectangleShader extends Shader
 		super("new/round_rect");
 	}
 
-	public void setThickness(float thickness)
+	public void setThickness(float thickness, float feather)
 	{
-		GL20.glUniform1f(0, thickness);
+		GL20.glUniform2f(0, thickness, feather);
 	}
 
 	public void setRectangle(float left, float top, float right, float bottom)

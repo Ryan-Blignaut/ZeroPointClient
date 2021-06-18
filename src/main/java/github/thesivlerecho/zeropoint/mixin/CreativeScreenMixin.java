@@ -1,5 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
+import github.thesivlerecho.zeropoint.event.events.RenderTooltipEvent;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -24,7 +25,7 @@ public abstract class CreativeScreenMixin extends AbstractInventoryScreen<Creati
 	@Inject(method = "renderTooltip", at = @At("HEAD"))
 	private void renderTooltip(MatrixStack matrices, ItemStack stack, int x, int y, CallbackInfo ci)
 	{
-//		ScreenMixin.setItemStack(stack);
+		RenderTooltipEvent.setItemStack(stack);
 	}
 
 

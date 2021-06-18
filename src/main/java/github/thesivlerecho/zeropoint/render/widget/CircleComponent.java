@@ -9,9 +9,9 @@ public class CircleComponent extends Component2d
 	public boolean complete;
 
 
-	public CircleComponent(float x, float y, float width, float height, double topRadius, double speed)
+	public CircleComponent(Component2d component2d, double topRadius, double speed)
 	{
-		super(x, y, width, height);
+		super(component2d);
 		this.topRadius = topRadius;
 		this.speed = speed;
 	}
@@ -26,8 +26,5 @@ public class CircleComponent extends Component2d
 		return speed;
 	}
 
-	public void render()
-	{
-	}
 
 }

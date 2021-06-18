@@ -5,56 +5,51 @@ import github.thesivlerecho.zeropoint.ZeroPointClient;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vector4f;
+import org.apache.commons.io.IOUtils;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL43;
 import org.lwjgl.system.MemoryUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.FloatBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.glBindFragDataLocation;
 
 public class Shader
 {
 	protected int programId;
-	private final String location;
+	private final String fragLocation;
+	private final String vertLocation;
+
+	private static final String COLOUR_VERT_LOCATION = "new/colour";
+
 
 	private static final Identifier SHADER = new Identifier(ZeroPointClient.MOD_ID, "shaders");
 	private static final FloatBuffer FLOAT_BUFFER = MemoryUtil.memAllocFloat(16);
 
-	public Shader(String location)
+	public Shader(String fragLocation)
 	{
-		this.location = location;
+		this(fragLocation, COLOUR_VERT_LOCATION);
 	}
 
-	public Optional<String> getShaderString(String name, int type, ResourceManager manager)
+	public Shader(String fragLocation, String vertLocation)
 	{
-		String ext;
-		if (type == GL_VERTEX_SHADER)
-			ext = ".vert";
-		else if (type == GL_FRAGMENT_SHADER)
-			ext = ".frag";
-		else if (type == GL43.GL_COMPUTE_SHADER)
-			ext = ".compute";
-		else
-			return Optional.empty();
-		Identifier location = new Identifier(SHADER.getNamespace(), SHADER.getPath() + "/" + name + ext);
+		this.fragLocation = fragLocation + ".frag";
+		this.vertLocation = vertLocation + ".vert";
+	}
 
+
+	public Optional<String> getShaderString(String name, ResourceManager manager)
+	{
+		Identifier location = new Identifier(SHADER.getNamespace(), SHADER.getPath() + "/" + name);
 		try (InputStream is = manager.getResource(location).getInputStream())
 		{
-			StringBuilder source = new StringBuilder();
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-			br.lines().forEach(s -> source.append(s).append("\n"));
-
-			return Optional.of(source.toString());
+			return Optional.of(IOUtils.toString(is, StandardCharsets.UTF_8));
 		} catch (IOException ignored)
 		{
 			System.err.println("is not found");
@@ -62,18 +57,18 @@ public class Shader
 		}
 	}
 
-	private int genShader(int glFragmentShader, ResourceManager manager)
+	private int genShader(int glFragmentShader, String loc, ResourceManager manager)
 	{
 		final int[] programId = {-1};
-		getShaderString(location, glFragmentShader, manager).ifPresent(shaderSource ->
-		                                                               {
-			                                                               programId[0] = glCreateShader(glFragmentShader);
-			                                                               glShaderSource(programId[0], shaderSource);
-			                                                               glCompileShader(programId[0]);
+		getShaderString(loc, manager).ifPresent(shaderSource ->
+		{
+			programId[0] = glCreateShader(glFragmentShader);
+			glShaderSource(programId[0], shaderSource);
+			glCompileShader(programId[0]);
 
-			                                                               if (glGetShaderi(programId[0], GL_COMPILE_STATUS) == GL_FALSE)
-				                                                               ZeroPointClient.LOGGER.error(glGetShaderInfoLog(programId[0], 100));
-		                                                               });
+			if (glGetShaderi(programId[0], GL_COMPILE_STATUS) == GL_FALSE)
+				ZeroPointClient.LOGGER.error(glGetShaderInfoLog(programId[0], 100));
+		});
 		return programId[0];
 	}
 
@@ -81,21 +76,17 @@ public class Shader
 	public Shader create(ResourceManager manager)
 	{
 
-		int vertId = genShader(GL_VERTEX_SHADER, manager);
-		int fragId = genShader(GL_FRAGMENT_SHADER, manager);
-		int compId = genShader(GL43.GL_COMPUTE_SHADER, manager);
+		int vertId = genShader(GL_VERTEX_SHADER, vertLocation, manager);
+		int fragId = genShader(GL_FRAGMENT_SHADER, fragLocation, manager);
 
 		programId = glCreateProgram();
-		glBindFragDataLocation(programId, 0, "fragColor");
+//		glBindFragDataLocation(programId, 0, "fragColor");
 		apply(vertId, id -> glAttachShader(programId, id));
 		apply(fragId, id -> glAttachShader(programId, id));
-		apply(compId, id -> glAttachShader(programId, id));
-
 		glLinkProgram(programId);
 
 		apply(vertId, GL20::glDeleteShader);
 		apply(fragId, GL20::glDeleteShader);
-		apply(compId, GL20::glDeleteShader);
 
 		if (glGetProgrami(programId, GL_LINK_STATUS) == GL_FALSE)
 			ZeroPointClient.LOGGER.error(GL20.glGetProgramInfoLog(programId));
@@ -139,7 +130,10 @@ public class Shader
 			glUniform1f(location, (Float) value);
 		else if (value instanceof Integer)
 			glUniform1i(location, (Integer) value);
-		else if (value instanceof final Matrix4f matrix4f)
+		else if (value instanceof final Vec2f vec2f)
+		{
+			glUniform2f(location, vec2f.x, vec2f.y);
+		} else if (value instanceof final Matrix4f matrix4f)
 		{
 			FLOAT_BUFFER.position(0);
 			matrix4f.writeColumnMajor(FLOAT_BUFFER);

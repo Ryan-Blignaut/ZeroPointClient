@@ -1,6 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.mod.ModPerspective;
+import github.thesivlerecho.zeropoint.mod.impl.ModPerspective;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;

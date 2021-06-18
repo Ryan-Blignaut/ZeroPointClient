@@ -1,5 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
+import github.thesivlerecho.zeropoint.render.font.CustomFonts;
 import net.minecraft.client.font.FontStorage;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.util.Identifier;
@@ -16,21 +17,8 @@ public abstract class TextRendererMixin
 	@Inject(method = "<init>", at = @At(value = "RETURN"))
 	private void x(Function<Identifier, FontStorage> fontStorageAccessor, CallbackInfo ci)
 	{
-//		ZeroPointClient.RENDERER = GlyphPageFontRenderer.create("SF Mono", 15, false, false, false);
-
-//		ThreadPoolExecutor executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(8);
-//		ConcurrentLinkedQueue<ResourceTexture.TextureData> textureQueue = new ConcurrentLinkedQueue<>();
-//		ZeroPointClient.fontRenderer = new TTFFontRenderer(executorService, textureQueue, new Font("Verdana", Font.PLAIN, 18));
-
-//		ZeroPointClient.font = new FontLoader(Font.decode("Cascadia Code Regular").deriveFont(15f), true, true);
-//		final char[] chars = new char[255];
-//		for (int i = 0; i < chars.length; i++)
-//		{
-//			chars[i] = ((char) i);
-//		}
-//		ZeroPointClient.font.generatePage(chars);
-//		ZeroPointClient.font.loadFontImage();
-
+		for (CustomFonts value : CustomFonts.values())
+			value.initFont();
 
 	}
 

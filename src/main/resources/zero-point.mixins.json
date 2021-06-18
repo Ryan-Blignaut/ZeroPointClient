@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "AbstractClientPlayerEntityMixin",
+    "BlockEntityRenderDispatcherMixin",
     "BossBarHudMixin",
     "BufferBuilderStorageMixin",
     "BuiltChunkStorageMixin",
@@ -14,6 +15,7 @@
     "GameRendererMixin",
     "HandledScreenMixin",
     "InGameHudMixin",
+    "ItemEntityRenderMixin",
     "ItemRendererMixin",
     "MerchantScreenMixin",
     "MouseMixin",

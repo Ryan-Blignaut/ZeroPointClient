@@ -1,7 +1,9 @@
 package github.thesivlerecho.zeropoint.mixin;
 
 import github.thesivlerecho.zeropoint.config.Settings;
-import github.thesivlerecho.zeropoint.mod.BlockOverlay;
+import github.thesivlerecho.zeropoint.event.EventManager;
+import github.thesivlerecho.zeropoint.event.events.Render3dEvent;
+import github.thesivlerecho.zeropoint.mod.impl.BlockOverlay;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -29,7 +31,7 @@ public abstract class WorldRendererMixin
 
 	@Inject(method = "drawShapeOutline", at = @At("INVOKE"), cancellable = true)
 	private static void drawBlockOutline(MatrixStack matrixStack,
-	                                     VertexConsumer vertexConsumer, VoxelShape voxelShape, double d, double e, double f, float g, float h, float i, float j, CallbackInfo ci)
+			VertexConsumer vertexConsumer, VoxelShape voxelShape, double d, double e, double f, float g, float h, float i, float j, CallbackInfo ci)
 	{
 		if (!Settings.BOUNDING_BOX_ENABLED)
 		{
@@ -64,10 +66,12 @@ public abstract class WorldRendererMixin
 	}
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0))
-	private void render(
-			MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer,
-			LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci)
+	private void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci)
 	{
+
+		final Render3dEvent event = new Render3dEvent(matrices);
+		EventManager.call(event);
+
 //		StreamSupport.stream(world.getEntities().spliterator(), false).filter(entity -> entity instanceof PlayerEntity && entity.isAlive()).map(
 //				PlayerEntity.class::cast).forEach(playerEntity -> Esp.renderEsp(playerEntity, matrices, tickDelta, camera));
 

@@ -2,8 +2,8 @@ package github.thesivlerecho.zeropoint.config;
 
 
 import github.thesivlerecho.zeropoint.ZeroPointClient;
-import github.thesivlerecho.zeropoint.gui.CustomColor;
-import github.thesivlerecho.zeropoint.gui.potionHud.EffectSetting;
+import github.thesivlerecho.zeropoint.gui.old.CustomColor;
+import github.thesivlerecho.zeropoint.gui.old.potionHud.EffectSetting;
 import net.minecraft.util.math.Vec2f;
 
 import java.util.ArrayList;

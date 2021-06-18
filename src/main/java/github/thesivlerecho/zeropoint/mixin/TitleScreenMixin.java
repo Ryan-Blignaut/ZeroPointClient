@@ -2,13 +2,13 @@ package github.thesivlerecho.zeropoint.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.thesivlerecho.zeropoint.ZeroPointClient;
-import github.thesivlerecho.zeropoint.gui.button.AbstractMenuButton;
-import github.thesivlerecho.zeropoint.gui.button.ClickableButton;
-import github.thesivlerecho.zeropoint.gui.button.SocialButtons;
-import github.thesivlerecho.zeropoint.render.DrawingUtil;
+import github.thesivlerecho.zeropoint.gui.old.button.AbstractMenuButton;
+import github.thesivlerecho.zeropoint.gui.old.button.ClickableButton;
+import github.thesivlerecho.zeropoint.gui.old.button.SocialButtons;
+import github.thesivlerecho.zeropoint.render.font.CustomFonts;
 import github.thesivlerecho.zeropoint.render.particle.SnowParticle;
+import github.thesivlerecho.zeropoint.render.shader.FrameBufferCustom;
 import github.thesivlerecho.zeropoint.render.shader.ShaderManager;
-import github.thesivlerecho.zeropoint.render.widget.Component2d;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -60,6 +60,8 @@ public abstract class TitleScreenMixin extends Screen
 		SnowParticle.init();
 	}
 
+	private FrameBufferCustom frameBufferCustom = new FrameBufferCustom();
+
 	@Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
 	public void renderCustom(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci)
 	{
@@ -67,8 +69,8 @@ public abstract class TitleScreenMixin extends Screen
 		RenderSystem.setShaderTexture(0, background);
 		drawTexture(matrices, 0, 0, this.width, this.height, mouseX * 2, mouseY, 3440 - 640 * 2, 1440 - 360, 3440, 1440);
 //		SnowParticle.render(matrices);
-
-		DrawingUtil.drawRectWithShader(new Component2d(50, 50, 50, 50).setColour(Color.PINK.getRGB()), 10, matrices);
+//		DrawingUtil.drawBlurRectWithShader(new Component2d(50, 50, 50, 50).setColour(Color.PINK.getRGB()), component2d -> DrawingUtil.drawBoxWithShader(matrices, component2d));
+		CustomFonts.CLIENT_FONT.getFont().drawString(matrices, 32, 100, "Ryan Test 123");
 
 		menuButtons.forEach(btn -> btn.render(matrices, mouseX, mouseY, delta));
 	}
