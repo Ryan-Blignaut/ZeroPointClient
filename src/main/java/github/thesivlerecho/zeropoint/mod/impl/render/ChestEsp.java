@@ -1,14 +1,23 @@
 package github.thesivlerecho.zeropoint.mod.impl.render;
 
 import github.thesivlerecho.zeropoint.event.TargetEvent;
+import github.thesivlerecho.zeropoint.event.events.Render2dEvent;
 import github.thesivlerecho.zeropoint.event.events.RenderTileEntityEvent;
 import github.thesivlerecho.zeropoint.mod.ClientMod;
 import github.thesivlerecho.zeropoint.mod.ModCategory;
+import github.thesivlerecho.zeropoint.render.shader.ShaderManager;
+import github.thesivlerecho.zeropoint.render.shader.ZeroPointShader;
+import github.thesivlerecho.zeropoint.render.shader.programs.OutlinePostprocessShader;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.ChestBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
+import net.minecraft.client.render.BufferBuilderStorage;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.Window;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 
@@ -45,6 +54,37 @@ public class ChestEsp extends ClientMod
 //		event.callbackInfo().cancel();
 
 	}
+
+
+	@TargetEvent
+	public void renderEvent(Render2dEvent event)
+	{
+
+		final OutlinePostprocessShader shader = ShaderManager.getShader(OutlinePostprocessShader.class, ZeroPointShader.OUTLINE);
+		shader.bind();
+//		MinecraftClient.getInstance().getEntityRenderDispatcher().setupCameraTransform(this.mc.timer.renderPartialTicks, 0);
+//		Iterator var3 = Minecraft.getMinecraft().theWorld.loadedEntityList.iterator();
+		MinecraftClient.getInstance().world.getEntities().forEach(entity ->
+		{
+			if (entity instanceof ItemEntity)
+			{
+				final EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
+				final EntityRenderer<? super Entity> renderer = entityRenderDispatcher.getRenderer(entity);
+				MinecraftClient.getInstance().cameraEntity.getPos();
+				renderer.render(entity, entity.getYaw(), event.tickDelta(), event.matrixStack(), new BufferBuilderStorage().getEntityVertexConsumers(), entityRenderDispatcher.getLight(entity, event.tickDelta()));
+				//				Render entityRender = this.mc.getRenderManager().getEntityRenderObject(entity);
+//				if (entityRender != null)
+//				{
+//					RenderItem.field_175058_l = false;
+//					entityRender.doRender(entity, interpolate(entity.posX, entity.lastTickPosX) - RenderManager.renderPosX, interpolate(entity.posY, entity.lastTickPosY) - RenderManager.renderPosY, interpolate(entity.posZ, entity.lastTickPosZ) - RenderManager.renderPosZ, this.mc.thePlayer.rotationYaw, this.mc.timer.renderPartialTicks);
+//					RenderItem.field_175058_l = true;
+//				}
+			}
+		});
+		shader.unBind();
+//		Gui.drawRect(0, 0, 0, 0, 0);
+	}
+
 
 	public static void checkSetupFBO()
 	{

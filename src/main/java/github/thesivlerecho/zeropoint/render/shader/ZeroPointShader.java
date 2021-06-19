@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 public enum ZeroPointShader
 {
-	ROUND_RECT(RoundedRectangleShader::new), CIRCLE(CircleShader::new), CONTRAST_POST_P(ContrastPostprocessShader::new), BLUR(BlurPostprocessShader::new), BLUR2(BlurPostprocessShaderSize::new);
+	ROUND_RECT(RoundedRectangleShader::new), CIRCLE(CircleShader::new), CONTRAST_POST_P(ContrastPostprocessShader::new), BLUR(BlurPostprocessShader::new), FAST_BLUR(FastBlurPostprocessShader::new), BLUR2(BlurPostprocessShaderSize::new), OUTLINE(OutlinePostprocessShader::new);
 
 	private final Supplier<? extends Shader> supplier;
 

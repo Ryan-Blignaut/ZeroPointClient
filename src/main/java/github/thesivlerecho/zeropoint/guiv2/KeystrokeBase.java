@@ -3,6 +3,7 @@ package github.thesivlerecho.zeropoint.guiv2;
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.thesivlerecho.zeropoint.config.Settings;
 import github.thesivlerecho.zeropoint.render.DrawingUtil;
+import github.thesivlerecho.zeropoint.render.shader.programs.BlurPostprocessShader;
 import github.thesivlerecho.zeropoint.render.widget.CircleComponent;
 import github.thesivlerecho.zeropoint.render.widget.Component2d;
 import github.thesivlerecho.zeropoint.util.CircleManager;
@@ -50,6 +51,7 @@ public class KeystrokeBase
 
 //		doGlScissor(32, 32, 64, 64);
 //		DrawingUtil.drawBlurWithShader(this.box, matrixStack);
+		BlurPostprocessShader.addBlurArea(this.box);
 		DrawingUtil.drawRectWithShader(this.box, 1, 1, matrixStack);
 
 

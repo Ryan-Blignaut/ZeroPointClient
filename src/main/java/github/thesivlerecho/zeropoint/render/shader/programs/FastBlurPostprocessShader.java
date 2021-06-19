@@ -13,17 +13,13 @@ import org.lwjgl.opengl.GL43;
 
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
-public class ContrastPostprocessShader extends Shader
+public class FastBlurPostprocessShader extends Shader
 {
-	public final Framebuffer input;
-	public final Framebuffer output;
 
-	public ContrastPostprocessShader()
+	public FastBlurPostprocessShader()
 	{
-		super("new/contrast", "new/defaultpp");
+		super("new/fastblur", "new/fastblur");
 
-		input = MinecraftClient.getInstance().getFramebuffer();
-		output = MinecraftClient.getInstance().getFramebuffer();
 
 	}
 
@@ -34,29 +30,41 @@ public class ContrastPostprocessShader extends Shader
 		RenderSystem.disableBlend();
 		RenderSystem.disableDepthTest();
 		glUseProgram(programId);
-		setArgument("ProjMat", Matrix4f.projectionMatrix(0.0F, (float) this.input.textureWidth, (float) this.input.textureHeight, 0.0F, 0.1F, 1000.0F));
 		return this;
 	}
 
+
 	public void draw()
 	{
+		Framebuffer input = MinecraftClient.getInstance().getFramebuffer();
+		Framebuffer output = MinecraftClient.getInstance().getFramebuffer();
+//		Framebuffer framebuffer = new WindowFramebuffer(input.viewportWidth, input.viewportHeight);
+//		draw1(input, framebuffer, 5, new Vec2f(0, 1));
+		draw1(input, output, 10, new Vec2f(0, 1));
+	}
 
-		this.input.endWrite();
-		float f = (float) this.output.textureWidth;
-		float g = (float) this.output.textureHeight;
+	public void draw1(Framebuffer input, Framebuffer output, float radius, Vec2f dir)
+	{
+
+		input.endWrite();
+		float f = (float) output.textureWidth;
+		float g = (float) output.textureHeight;
 
 		RenderSystem.viewport(0, 0, (int) f, (int) g);
 		this.bind();
+		setArgument("ProjMat", Matrix4f.projectionMatrix(0.0F, (float) input.textureWidth, (float) input.textureHeight, 0.0F, 0.1F, 1000.0F));
 		GlStateManager._bindTexture(input.getColorAttachment());
 //		MinecraftClient.getInstance().getTextureManager().bindTexture(new Identifier(ZeroPointClient.MOD_ID, "textures/ui/zero-logo.png"));
 		GL20.glUniform1i(0, 0);
-		GL20.glUniform1f(1, 2);
 		RenderSystem.activeTexture(GL43.GL_TEXTURE0);
-
-		setArgument("InSize", new Vec2f((float) this.input.textureWidth, (float) this.input.textureHeight));
+		setArgument("InSize", new Vec2f((float) input.textureWidth, (float) input.textureHeight));
 		setArgument("OutSize", new Vec2f(f, g));
+//		GL20.glUniform1f(1, radius);
+//		GL20.glUniform2f(2, dir.x, dir.y);
+
+
 //		this.output.clear(MinecraftClient.IS_SYSTEM_MAC);
-		this.output.beginWrite(false);
+		output.beginWrite(false);
 		RenderSystem.depthFunc(519);
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
 		bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
@@ -68,14 +76,14 @@ public class ContrastPostprocessShader extends Shader
 		BufferRenderer.postDraw(bufferBuilder);
 		RenderSystem.depthFunc(515);
 		this.unBind();
-		this.output.endWrite();
-		this.input.endRead();
+		output.endWrite();
+		input.endRead();
 	}
 
 	@Override
 	public void unBind()
 	{
-//		GlStateManager._bindTexture(0);
+		GlStateManager._bindTexture(0);
 		super.unBind();
 	}
 }
