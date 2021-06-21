@@ -1,6 +1,6 @@
+/*
 package github.thesivlerecho.zeropoint.gui.old;
 
-import github.thesivlerecho.zeropoint.config.SettingCategory;
 import github.thesivlerecho.zeropoint.gui.old.button.CheckBoxButton;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
@@ -92,3 +92,4 @@ public class ListBox
 //	}
 
 }
+*/

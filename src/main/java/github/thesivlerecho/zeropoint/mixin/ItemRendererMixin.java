@@ -1,5 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
+import github.thesivlerecho.zeropoint.render.shader.programs.post.BlurPostprocessShader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -20,14 +21,34 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ItemRendererMixin
 {
 	private static ItemStack stack;
+	private static BlurPostprocessShader s = null;
+
+
+/*
+	@Inject(method = "renderBakedItemQuads", at = @At(value = "HEAD"))
+	private void render3(MatrixStack matrices, VertexConsumer vertices, List<BakedQuad> quads, ItemStack stack, int light, int overlay, CallbackInfo ci)
+	{
+		s = ShaderManager.getShader(BlurPostprocessShader.class, ZeroPointShader.BLUR);
+		final Framebuffer framebuffer = MinecraftClient.getInstance().getFramebuffer();
+		s.setUp(framebuffer, framebuffer, 5, new Vec2f(1, 1));
+		s.bind();
+	}
+
+	@Inject(method = "renderBakedItemQuads", at = @At(value = "RETURN"))
+	private void render2(MatrixStack matrices, VertexConsumer vertices, List<BakedQuad> quads, ItemStack stack, int light, int overlay, CallbackInfo ci)
+	{
+		s.unBind();
+	}
+*/
 
 	@Inject(method = "getDirectItemGlintConsumer", at = @At(value = "HEAD"), cancellable = true)
 	private static void render(VertexConsumerProvider vertexConsumerProvider, RenderLayer layer, boolean bl, boolean glint, CallbackInfoReturnable<VertexConsumer> cir)
 	{
 //		if (stack.getItem() instanceof PotionItem)
 //		{
-//			cir.setReturnValue(VertexConsumers.dual(vertexConsumerProvider.getBuffer(ModRenderLayer.POT_OVERLAY), vertexConsumerProvider.getBuffer(layer)));
+//			cir.setReturnValue(VertexConsumers.union(vertexConsumerProvider.getBuffer(ModRenderLayer.POT_OVERLAY), vertexConsumerProvider.getBuffer(layer)));
 //		}
+
 
 //		if (stack.getItem() instanceof SwordItem)
 //		{

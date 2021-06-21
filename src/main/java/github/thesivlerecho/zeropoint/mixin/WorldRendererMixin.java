@@ -3,7 +3,7 @@ package github.thesivlerecho.zeropoint.mixin;
 import github.thesivlerecho.zeropoint.config.Settings;
 import github.thesivlerecho.zeropoint.event.EventManager;
 import github.thesivlerecho.zeropoint.event.events.Render3dEvent;
-import github.thesivlerecho.zeropoint.mod.impl.BlockOverlay;
+import github.thesivlerecho.zeropoint.module.impl.BlockOverlay;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
@@ -29,14 +29,15 @@ public abstract class WorldRendererMixin
 	@Final
 	private BufferBuilderStorage bufferBuilders;
 
-	@Inject(method = "drawShapeOutline", at = @At("INVOKE"), cancellable = true)
+	@Inject(method = "drawShapeOutline", at = @At("HEAD"), cancellable = true)
 	private static void drawBlockOutline(MatrixStack matrixStack,
 			VertexConsumer vertexConsumer, VoxelShape voxelShape, double d, double e, double f, float g, float h, float i, float j, CallbackInfo ci)
 	{
 		if (!Settings.BOUNDING_BOX_ENABLED)
 		{
 			ci.cancel();
-		} else if (Settings.CUSTOM_BOUNDING_BOX)
+		}
+//		else if (Settings.CUSTOM_BOUNDING_BOX)
 		{
 			ci.cancel();
 

@@ -7,7 +7,6 @@ import github.thesivlerecho.zeropoint.gui.old.button.ClickableButton;
 import github.thesivlerecho.zeropoint.gui.old.button.SocialButtons;
 import github.thesivlerecho.zeropoint.render.font.CustomFonts;
 import github.thesivlerecho.zeropoint.render.particle.SnowParticle;
-import github.thesivlerecho.zeropoint.render.shader.FrameBufferCustom;
 import github.thesivlerecho.zeropoint.render.shader.ShaderManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -60,7 +59,6 @@ public abstract class TitleScreenMixin extends Screen
 		SnowParticle.init();
 	}
 
-	private FrameBufferCustom frameBufferCustom = new FrameBufferCustom();
 
 	@Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
 	public void renderCustom(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci)

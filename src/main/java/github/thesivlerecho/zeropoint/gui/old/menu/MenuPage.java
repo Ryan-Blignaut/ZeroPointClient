@@ -1,22 +1,20 @@
+/*
 package github.thesivlerecho.zeropoint.gui.old.menu;
 
-import github.thesivlerecho.zeropoint.config.SettingCategory;
+import com.mojang.datafixers.kinds.ListBox;
 import github.thesivlerecho.zeropoint.config.Settings;
 import github.thesivlerecho.zeropoint.gui.old.GuiHelper;
-import github.thesivlerecho.zeropoint.gui.old.ListBox;
-import github.thesivlerecho.zeropoint.gui.old.button.CheckBoxButton;
 import net.minecraft.client.util.math.MatrixStack;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MenuPage
 {
 	//string being setting name , SettingCategory being the setting category
-	HashMap<SettingCategory, ListBox> map1 = new HashMap<>();
+//	HashMap<SettingCategory, ListBox> map1 = new HashMap<>();
 
 
 	ArrayList<ListBox> listBoxes = new ArrayList<>();
@@ -35,7 +33,9 @@ public class MenuPage
 
 		GuiHelper.fill(matrixStack, GL11.GL_QUADS, menuXOffset, menuYOffset, menuXOffset + (550) / scale, menuYOffset + (650) / scale, new Color(32, 32, 38).getRGB());
 		GuiHelper.fill(matrixStack, GL11.GL_QUADS, menuXOffset + 10 / scale, menuYOffset + 45 / scale, menuXOffset + (550 - 12) / scale, menuYOffset + (650 - 12) / scale, new Color(22, 22, 28).getRGB());
-		GuiHelper.fill(matrixStack, GL11.GL_QUADS, menuXOffset, menuYOffset + 30 / scale, menuXOffset + (549) / scale, menuYOffset + (6 + 30) / scale, /*new Color(73, 73, 82).getRGB()+*/ Color.CYAN.getRGB());
+		GuiHelper.fill(matrixStack, GL11.GL_QUADS, menuXOffset, menuYOffset + 30 / scale, menuXOffset + (549) / scale, menuYOffset + (6 + 30) / scale, */
+/*new Color(73, 73, 82).getRGB()+*//*
+ Color.CYAN.getRGB());
 		GuiHelper.fill(matrixStack, GL11.GL_LINE_LOOP, menuXOffset, menuYOffset, menuXOffset + (550) / scale, menuYOffset + (650) / scale, new Color(27, 27, 33).getRGB());
 		GuiHelper.fill(matrixStack, GL11.GL_LINE_LOOP, menuXOffset + 10 / scale, menuYOffset + 45 / scale, menuXOffset + (550 - 12) / scale, menuYOffset + (650 - 12) / scale, new Color(36, 36, 41).getRGB());
 
@@ -59,13 +59,16 @@ public class MenuPage
 //		Arrays.stream(Settings.class.getDeclaredFields()).filter(field -> field.isAnnotationPresent(BoolConfigOption.class)).forEach(field ->
 //				m.put(field.getName(), new ListBox(x.getAndAdd(24), y.getAndAdd(24))));
 
-		ListBox value1 = new ListBox(25, 25, SettingCategory.MISC);
-		value1.addCheckbox(new CheckBoxButton(5, 5, 5, 5, "test", Settings.FLIGHT));
-		listBoxes.add(value1);
+//		ListBox value1 = new ListBox(25, 25, SettingCategory.MISC);
+//		value1.addCheckbox(new CheckBoxButton(5, 5, 5, 5, "test", Settings.FLIGHT));
+//		listBoxes.add(value1);
 
-		/*Arrays.stream(Settings.class.getDeclaredFields()).filter(field -> field.isAnnotationPresent(BoolConfigOption.class)).forEach(field ->
+		*/
+/*Arrays.stream(Settings.class.getDeclaredFields()).filter(field -> field.isAnnotationPresent(BoolConfigOption.class)).forEach(field ->
 		{
-		*//*	SettingCategory category = field.getAnnotation(BoolConfigOption.class).category();
+		*//*
+*/
+/*	SettingCategory category = field.getAnnotation(BoolConfigOption.class).category();
 			String name = field.getAnnotation(BoolConfigOption.class).name();
 			if (!map1.containsKey(category))
 				map1.put(category, new ListBox(x.getAndAdd(24), 0, category));
@@ -80,9 +83,12 @@ public class MenuPage
 					e.printStackTrace();
 				}
 			}*//*
+*/
+/*
 
 
-		});*/
+		});*//*
+
 
 
 //		map.forEach((s, settingCategory) ->
@@ -97,3 +103,4 @@ public class MenuPage
 
 	}
 }
+*/

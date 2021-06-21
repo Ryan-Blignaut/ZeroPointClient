@@ -4,6 +4,7 @@ precision highp float;
 
 layout(location = 0) uniform vec2 u_Radius;
 layout(location = 1) uniform vec4 u_InnerRect;
+layout(location = 2) uniform vec4 colour;
 
 smooth in vec2 position;
 smooth in vec4 vertexColor;

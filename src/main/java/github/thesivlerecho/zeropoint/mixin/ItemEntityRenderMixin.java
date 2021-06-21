@@ -1,6 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.mod.impl.render.ItemPhysics;
+import github.thesivlerecho.zeropoint.module.impl.render.ItemPhysics;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.ItemEntityRenderer;
 import net.minecraft.client.render.item.ItemRenderer;

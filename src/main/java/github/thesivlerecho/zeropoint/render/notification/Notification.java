@@ -1,7 +1,7 @@
 package github.thesivlerecho.zeropoint.render.notification;
 
 import github.thesivlerecho.zeropoint.render.DrawingUtil;
-import github.thesivlerecho.zeropoint.render.widget.Component2d;
+import github.thesivlerecho.zeropoint.render.widget.PositioningComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.util.Window;
@@ -19,7 +19,7 @@ public class Notification
 	private boolean Disposing;
 	private float posX, posY;
 
-	private final Component2d box;
+	private final PositioningComponent box;
 	private static final TextRenderer TEXT_RENDERER = MinecraftClient.getInstance().textRenderer;
 
 
@@ -38,7 +38,7 @@ public class Notification
 			baseWidth = (float) (TEXT_RENDERER.getWidth(title) * 1.1 + graphicSize);
 		if (TEXT_RENDERER.getWidth(info) * 0.9 + graphicSize >= baseWidth)
 			baseWidth = (float) (TEXT_RENDERER.getWidth(info) * 0.9 + graphicSize);
-		box = new Component2d(0, 0, baseWidth, graphicSize);
+		box = new PositioningComponent(0, 0, baseWidth, graphicSize);
 	}
 
 	public Notification(String title, String info, int x, int y)

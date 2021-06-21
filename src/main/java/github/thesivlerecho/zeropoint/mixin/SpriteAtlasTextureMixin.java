@@ -1,7 +1,7 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.registration.ColourEnum;
-import github.thesivlerecho.zeropoint.registration.SpriteAccessor;
+import github.thesivlerecho.zeropoint.util.ColourEnum;
+import github.thesivlerecho.zeropoint.util.SpriteAccessor;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;

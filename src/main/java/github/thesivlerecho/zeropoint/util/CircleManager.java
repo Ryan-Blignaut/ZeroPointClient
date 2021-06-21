@@ -5,7 +5,6 @@ import github.thesivlerecho.zeropoint.render.widget.CircleComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +53,7 @@ public class CircleManager
 	public void drawCircle(CircleComponent c, MatrixStack matrixStack)
 	{
 		final float progress = (float) (c.progress * MinecraftClient.getInstance().getTickDelta() + (c.lastProgress * (1.0f - MinecraftClient.getInstance().getTickDelta())));
-		c.setColour(new Color(1f, 1f, 1f, (1 - Math.min(1f, Math.max(0f, (float) (progress / c.getTopRadius())))) / 2).getRGB());
+//		c.setColour(new Color(1f, 1f, 1f, (1 - Math.min(1f, Math.max(0f, (float) (progress / c.getTopRadius())))) / 2).getRGB());
 		if (!c.complete)
 			DrawingUtil.drawCircleShader(c, progress, 1, component2d -> DrawingUtil.drawBoxWithShader(matrixStack, component2d));
 	}

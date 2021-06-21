@@ -1,6 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.Transition;
+import github.thesivlerecho.zeropoint.util.Transition;
 import github.thesivlerecho.zeropoint.gui.old.button.ClickableButton;
 import github.thesivlerecho.zeropoint.gui.old.overlay.watermark.Watermark;
 import net.minecraft.client.MinecraftClient;

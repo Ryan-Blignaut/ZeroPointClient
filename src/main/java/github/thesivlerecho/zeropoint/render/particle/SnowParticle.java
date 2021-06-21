@@ -1,7 +1,7 @@
 package github.thesivlerecho.zeropoint.render.particle;
 
 import github.thesivlerecho.zeropoint.render.DrawingUtil;
-import github.thesivlerecho.zeropoint.render.widget.Component2d;
+import github.thesivlerecho.zeropoint.render.widget.PositioningComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
@@ -54,7 +54,7 @@ public class SnowParticle
 
 	private void draw(MatrixStack matrixStack)
 	{
-		DrawingUtil.drawCircleShader(new Component2d(positionX, positionY, size, size).setColour(color), size / 2, 3, component2d -> DrawingUtil.drawBoxWithShader(matrixStack, component2d));
+		DrawingUtil.drawCircleShader(new PositioningComponent(positionX, positionY, size, size), size / 2, 3, component2d -> DrawingUtil.drawBoxWithShader(matrixStack, component2d));
 	}
 
 	public SnowParticle(float size, int color, float positionX, float positionY, float velocityX, float velocityY)

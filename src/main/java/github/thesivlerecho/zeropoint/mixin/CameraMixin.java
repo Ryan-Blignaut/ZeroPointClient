@@ -1,6 +1,6 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.mod.impl.ModPerspective;
+import github.thesivlerecho.zeropoint.module.impl.ModPerspective;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.BlockView;

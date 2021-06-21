@@ -1,21 +1,23 @@
+/*
 package github.thesivlerecho.zeropoint.guiv2;
 
+import github.thesivlerecho.zeropoint.render.widget.ContainerComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.util.math.MatrixStack;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-
 public class KeystrokeManager
 {
 
-	private static final CopyOnWriteArrayList<KeystrokeBase> keys = new CopyOnWriteArrayList<>();
+	private static final ContainerComponent COMPONENT = new ContainerComponent();
 	private static KeystrokeManager manager;
 
 	public KeystrokeManager()
 	{
 		final GameOptions options = MinecraftClient.getInstance().options;
 		final int keyDimensions = KeystrokeBase.BASE_KEY_SIZE;
+		COMPONENT.addChildren();
+
 		keys.add(new KeystrokeBase(options.keyForward, keyDimensions, 0));
 		keys.add(new KeystrokeBase(options.keyBack, keyDimensions, keyDimensions));
 		keys.add(new KeystrokeBase(options.keyLeft, 0, keyDimensions));
@@ -44,3 +46,4 @@ public class KeystrokeManager
 
 
 }
+*/

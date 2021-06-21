@@ -28,6 +28,7 @@ public class CFont
 	protected int fontHeight = -1;
 	protected int charOffset = 0;
 	private final Identifier texture;
+	private final int[] mImageData = new int[((1 << 6) * (1 << 6)) << 1];
 
 
 	public CFont(Font font, boolean antiAlias, boolean fractionalMetrics)
@@ -38,7 +39,6 @@ public class CFont
 
 		final BufferedImage textureSheet = generateFontTextureSheet(font, antiAlias, fractionalMetrics);
 		texture = bufferedImageToTexture(textureSheet);
-
 
 	}
 
@@ -74,6 +74,7 @@ public class CFont
 
 	private Identifier bufferedImageToTexture(BufferedImage image)
 	{
+
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try
 		{
@@ -86,6 +87,9 @@ public class CFont
 		{
 			e.printStackTrace();
 		}
+
+//		final Texture2D texture2D = new Texture2D();
+//		texture2D.upload(0,);
 		return null;
 	}
 
@@ -141,7 +145,6 @@ public class CFont
 			g.drawString(String.valueOf(ch), positionX + 2, positionY + fontMetrics.getAscent());
 			positionX += charData.width;
 		}
-
 		return bufferedImage;
 
 

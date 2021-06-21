@@ -1,6 +1,6 @@
 package github.thesivlerecho.zeropoint.render.widget;
 
-public class CircleComponent extends Component2d
+public class CircleComponent extends PositioningComponent
 {
 
 	private final double topRadius, speed;
@@ -9,9 +9,9 @@ public class CircleComponent extends Component2d
 	public boolean complete;
 
 
-	public CircleComponent(Component2d component2d, double topRadius, double speed)
+	public CircleComponent(PositioningComponent positioningComponent, double topRadius, double speed)
 	{
-		super(component2d);
+		super(positioningComponent);
 		this.topRadius = topRadius;
 		this.speed = speed;
 	}

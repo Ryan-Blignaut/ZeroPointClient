@@ -2,8 +2,7 @@ package github.thesivlerecho.zeropoint.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.thesivlerecho.zeropoint.ZeroPointClient;
-import github.thesivlerecho.zeropoint.render.DrawingUtil;
-import github.thesivlerecho.zeropoint.render.widget.Component2d;
+import github.thesivlerecho.zeropoint.render.widget.PositioningComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Overlay;
 import net.minecraft.client.gui.screen.SplashScreen;
@@ -20,7 +19,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.*;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -163,10 +161,10 @@ public abstract class SplashScreenMixin extends Overlay
 	{
 		final int i = MathHelper.ceil((float) (maxX - minX - 1) * this.progress);
 
-		final Component2d component = new Component2d(minX, minY, maxX, maxY);
+		final PositioningComponent component = new PositioningComponent(minX, minY, maxX, maxY);
 //		DrawingUtil.drawBox(matrix, component.resizeComponent(-1).setColour(new Color(76, 86, 106).getRGB()));
 //		DrawingUtil.drawBox(matrix, component.setColour(new Color(70, 77, 93).getRGB()));
-		DrawingUtil.drawBoxWithShader(matrix, component.resizeComponent(1).setW(minX + i).setColour(new Color(143, 188, 187).getRGB()));
+//		DrawingUtil.drawBoxWithShader(matrix, component.resizeComponent(1).setW(minX + i).setForegroundColour(new Color(143, 188, 187).getRGB()));
 
 //		DrawingUtil.drawRectWithShader(component.resizeComponent(-1).setColour(new Color(76, 86, 106).getRGB()), radius + 1, matrix);
 //		DrawingUtil.drawRectWithShader(component.setColour(new Color(70, 77, 93).getRGB()), radius + 1, matrix);

@@ -1,49 +1,40 @@
 package github.thesivlerecho.zeropoint.render.widget;
 
-public class Component2d
+import net.minecraft.client.util.math.MatrixStack;
+
+public abstract class Component2d implements Renderable
 {
-	private float x, y;
-	private float w, h;
+	public static int USE_PREF_SIZE = 0, USE_COMPUTED_SIZE = 1, USE_RESCALE_TEXT = 2;
+	private final int sizeParadigm;
+	private final PositioningComponent component;
 	private int colour = 0;
 	protected boolean visible = true;
 
-	public Component2d(float x, float y, float width, float height)
+	public Component2d(PositioningComponent component, int sizeParadigm)
 	{
-		this.x = x;
-		this.y = y;
-		this.w = width;
-		this.h = height;
+		this.component = component;
+		this.sizeParadigm = sizeParadigm;
 	}
 
-	public Component2d(Component2d other)
+	public Component2d(PositioningComponent component)
 	{
-		this.x = other.x;
-		this.y = other.y;
-		this.w = other.w;
-		this.h = other.h;
-		this.colour = other.colour;
-		this.visible = other.visible;
+		this(component, USE_PREF_SIZE);
 	}
 
-
-	public void setX(float x)
-	{
-		this.x = x;
-	}
-
-	public void setY(float y)
-	{
-		this.y = y;
-	}
 
 	public boolean inMouseOver(int mouseX, int mouseY)
 	{
-		return mouseX >= this.x && mouseX <= this.x + this.w && mouseY >= this.y && mouseY <= this.y + this.h;
+		return mouseX >= this.component.getX() && mouseX <= this.component.getW() && mouseY >= this.component.getY() && mouseY <= this.component.getH();
 	}
 
 	public int getColour()
 	{
 		return colour;
+	}
+
+	public PositioningComponent getComponent()
+	{
+		return component;
 	}
 
 	public Component2d setColour(int colour)
@@ -52,85 +43,12 @@ public class Component2d
 		return this;
 	}
 
-	public Component2d resizeComponent(float size)
+	@Override
+	public abstract void render(MatrixStack matrices);
+
+	public int getSizeParadigm()
 	{
-		this.x += size;
-		this.y += size;
-		this.w += -size;
-		this.h += -size;
-		return this;
+		return sizeParadigm;
 	}
 
-	public Component2d staticResizeComponent(float size)
-	{
-		return new Component2d(this.x - size, this.y - size, this.w + size, this.h + size).setColour(colour);
-	}
-
-	public Component2d resizeComponent(float x, float y, float width, float height)
-	{
-		this.x += x;
-		this.y += y;
-		this.w += width;
-		this.h += height;
-		return this;
-	}
-
-
-	public float getX()
-	{
-		return x;
-	}
-
-	public float getY()
-	{
-		return y;
-	}
-
-	public float getW()
-	{
-		return x + w;
-	}
-
-	public float getH()
-	{
-		return y + h;
-	}
-
-	public float getWidth()
-	{
-		return w;
-	}
-
-	public float getHeight()
-	{
-		return h;
-	}
-
-	public Component2d setW(float w)
-	{
-		this.w = w;
-		return this;
-	}
-
-	public Component2d setH(float h)
-	{
-		this.h = h;
-		return this;
-	}
-
-	public float getCenterX()
-	{
-		return w / 2;
-	}
-
-	public float getCenterY()
-	{
-		return h / 2;
-	}
-
-
-	public void addToX(float x)
-	{
-		this.x += x;
-	}
 }

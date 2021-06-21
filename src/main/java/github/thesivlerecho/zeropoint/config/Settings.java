@@ -1,7 +1,7 @@
 package github.thesivlerecho.zeropoint.config;
 
 
-import github.thesivlerecho.zeropoint.ZeroPointClient;
+import github.thesivlerecho.zeropoint.config.selector.ConfigOption;
 import github.thesivlerecho.zeropoint.gui.old.CustomColor;
 import github.thesivlerecho.zeropoint.gui.old.potionHud.EffectSetting;
 import net.minecraft.util.math.Vec2f;
@@ -20,10 +20,6 @@ public class Settings
 	public static Integer wingRed = 100, wingGreen = 100, wingBlue = 100;
 
 	@ConfigOption
-	@BoolConfigOption(name = "test", category = SettingCategory.SPEED)
-	public static AtomicBoolean FLIGHT = new AtomicBoolean(true);
-
-	@ConfigOption
 	public static AtomicBoolean renderIcons = new AtomicBoolean(true);
 	public static Boolean renderLevelsAbove4 = true, showWhileChat = false, romanNumerals = true;
 	@ConfigOption
@@ -40,7 +36,6 @@ public class Settings
 	@ConfigOption
 	public static int TOOLTIP_BORDER_BOTTOM_COLOUR = -265079748;
 
-	/*KEYSTROKES CONFIG*/
 	@ConfigOption
 	public static Vec2f KEY_STROKES_OFFSET = new Vec2f(0, 0);
 	@ConfigOption
@@ -54,11 +49,11 @@ public class Settings
 
 	public static void create()
 	{
-		ZeroPointClient.CONFIG.register(instance);
+		Config.CLIENT_INSTANCE.register(instance);
 	}
 
 	public static void save()
 	{
-		ZeroPointClient.CONFIG.saveToFile(instance);
+		Config.CLIENT_INSTANCE.save();
 	}
 }

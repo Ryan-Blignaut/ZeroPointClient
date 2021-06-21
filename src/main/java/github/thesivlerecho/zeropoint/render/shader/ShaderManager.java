@@ -20,9 +20,19 @@ public class ShaderManager
 
 	private static final EnumMap<ZeroPointShader, Shader> SHADER_MAP = new EnumMap<>(ZeroPointShader.class);
 
+
+	public static Shader getShader(ZeroPointShader shader)
+	{
+		return SHADER_MAP.get(shader);
+	}
+
 	public static <T> T getShader(Class<T> clazz, ZeroPointShader shader)
 	{
-		return ((T) SHADER_MAP.get(shader));
+		final Shader o = SHADER_MAP.get(shader);
+		if (clazz.isInstance(o))
+			return clazz.cast(o);
+		else
+			return null;
 	}
 
 	public static void reload(ResourceManager manager)

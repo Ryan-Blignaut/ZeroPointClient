@@ -9,7 +9,7 @@ import github.thesivlerecho.zeropoint.event.EventManager;
 import github.thesivlerecho.zeropoint.event.events.RenderTooltipEvent;
 import github.thesivlerecho.zeropoint.gui.old.GuiHelper;
 import github.thesivlerecho.zeropoint.render.DrawingUtil;
-import github.thesivlerecho.zeropoint.render.widget.Component2d;
+import github.thesivlerecho.zeropoint.render.widget.PositioningComponent;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -334,15 +334,15 @@ public abstract class ScreenMixin
 		RenderSystem.enableBlend();
 		RenderSystem.defaultBlendFunc();
 		matrixStack.push();
-		final Component2d component2d = new Component2d(tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipWidth + H_BORDER, tooltipHeight + V_BORDER);
-		component2d.setColour(background);
-		DrawingUtil.drawRectWithShader(component2d, 3, matrixStack);
+		final PositioningComponent positioningComponent = new PositioningComponent(tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipWidth + H_BORDER, tooltipHeight + V_BORDER);
+//		positioningComponent.setColour(background);
+		DrawingUtil.drawRectWithShader(positioningComponent, 3, matrixStack);
 //		GuiHelper.drawRoundedRect(matrixStack, tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER, tooltipY + tooltipHeight + V_BORDER, 3, background);
-		GuiHelper.drawGradientBoardedRect(matrixStack,
-				tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER,
-				tooltipY + tooltipHeight + V_BORDER, 3,
-				borderTop,
-				borderBottom);
+//		GuiHelper.drawGradientBoardedRect(matrixStack,
+//				tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER,
+//				tooltipY + tooltipHeight + V_BORDER, 3,
+//				borderTop,
+//				borderBottom);
 
 		RenderSystem.enableDepthTest();
 		RenderSystem.disableBlend();

@@ -26,6 +26,7 @@
     "SpriteAtlasTextureMixin",
     "TextRendererMixin",
     "TitleScreenMixin",
+    "WorldMixin",
     "WorldRendererMixin"
   ],
   "client": [

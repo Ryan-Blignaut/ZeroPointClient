@@ -2,10 +2,8 @@ package github.thesivlerecho.zeropoint.gui.old.overlay.watermark;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import github.thesivlerecho.zeropoint.ZeroPointClient;
-import github.thesivlerecho.zeropoint.render.DrawingUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import org.lwjgl.opengl.GL11;
 
 public class Watermark
 {
@@ -20,7 +18,7 @@ public class Watermark
 		{
 			case TOP:
 				RenderSystem.setShaderTexture(0,IDENTIFIER);
-				DrawingUtil.drawTextureBlend(matrices, x + backgroundWidth / 2f - 60, y - 27 - 5, 45, y - 1, GL11.GL_NEAREST);
+//				DrawingUtil.drawTextureBlend(matrices, x + backgroundWidth / 2f - 60, y - 27 - 5, 45, y - 1, GL11.GL_NEAREST);
 //				ZeroPointClient.DRAWING_HELPER.drawIcon(matrices, icon, x + backgroundWidth / 2f - 60, y - 27 - 5, x + backgroundWidth / 2f + 45, y - 1);
 				break;
 			case BOTTOM:

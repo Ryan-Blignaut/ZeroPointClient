@@ -1,3 +1,4 @@
+/*
 package github.thesivlerecho.zeropoint.gui.old.screen;
 
 import github.thesivlerecho.zeropoint.config.Settings;
@@ -75,6 +76,7 @@ public class MenuScreen extends Screen
 		GuiHelper.fill(matrixStack, GL11.GL_QUADS, menuXOffset + (x + 2) / scale, menuYOffset + (y + 2) / scale, menuXOffset + (w - 2) / scale, menuYOffset + (h - 2) / scale, new Color(33, 33, 39).getRGB());
 	}
 
+*/
 /*	private void blur(MatrixStack matrixStack)
 	{
 //		Matrix4f model = matrixStack.peek().getModel();
@@ -150,7 +152,8 @@ public class MenuScreen extends Screen
 		GlStateManager.color4f(1f, 1f, 1f, 1f);
 		GuiHelper.drawTexturedRect(x, y, blurWidth, blurHeight, uMin, uMax, vMin, vMax, GL11.GL_LINEAR);
 		blurOutputHorz.endRead();
-	}*/
+	}*//*
+
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)
@@ -208,3 +211,4 @@ public class MenuScreen extends Screen
 	}
 
 }
+*/
