@@ -1,51 +1,17 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-import com.mojang.blaze3d.systems.RenderSystem;
-import github.thesivlerecho.zeropoint.ZeroPointClient;
-import github.thesivlerecho.zeropoint.config.Settings;
-import github.thesivlerecho.zeropoint.event.EventManager;
-import github.thesivlerecho.zeropoint.event.events.RenderTooltipEvent;
-import github.thesivlerecho.zeropoint.gui.old.GuiHelper;
-import github.thesivlerecho.zeropoint.render.DrawingUtil;
-import github.thesivlerecho.zeropoint.render.widget.PositioningComponent;
-import net.minecraft.block.ShulkerBoxBlock;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.text.*;
-import net.minecraft.util.DyeColor;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.awt.*;
 import java.util.List;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Mixin(Screen.class)
 public abstract class ScreenMixin
@@ -55,9 +21,9 @@ public abstract class ScreenMixin
 	private static final int V_BORDER = 4;
 	private static final int LINE_HEIGHT = 10;
 	private static final int TITLE_GAP = 2;
-	private final int background = Settings.TOOLTIP_BACKGROUND_COLOUR;
-	private int borderTop = Settings.TOOLTIP_BORDER_TOP_COLOUR;
-	private int borderBottom = Settings.TOOLTIP_BORDER_BOTTOM_COLOUR;
+//	private final int background = Settings.TOOLTIP_BACKGROUND_COLOUR;
+//	private int borderTop = Settings.TOOLTIP_BORDER_TOP_COLOUR;
+//	private int borderBottom = Settings.TOOLTIP_BORDER_BOTTOM_COLOUR;
 
 	@Shadow protected TextRenderer textRenderer;
 	@Shadow public int width;
@@ -68,15 +34,13 @@ public abstract class ScreenMixin
 	@Inject(method = "renderTooltipFromComponents", at = @At(value = "HEAD"), cancellable = true)
 	private void renderCustomTooltip123(MatrixStack matrices, List<TooltipComponent> components, int x, int y, CallbackInfo ci)
 	{
-		RenderTooltipEvent renderTooltipEvent = new RenderTooltipEvent(matrices, components, x, y, textRenderer, itemRenderer, width, height, ci);
-		EventManager.call(renderTooltipEvent);
+//		EventManager.call(new RenderTooltipEvent(matrices, components, x, y, textRenderer, itemRenderer, width, height, ci));
 	}
 
-
+/*
 	private List<ItemStack> stacks = new ArrayList<>();
 	private ItemStack stack;
 
-	private static ItemStack cachedTooltipStack = ItemStack.EMPTY;
 
 	private static void setItemStack(ItemStack stack)
 	{
@@ -84,13 +48,12 @@ public abstract class ScreenMixin
 	}
 
 
-	private List<? extends Text> lines = new ArrayList<>();
+	private List<? extends Text> lines = new ArrayList<>();*/
 
 
-	@Inject(method = "renderTooltip(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/item/ItemStack;II)V", at = @At(value = "HEAD"), cancellable = true)
+	/*@Inject(method = "renderTooltip(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/item/ItemStack;II)V", at = @At(value = "HEAD"), cancellable = true)
 	private void renderCustomTooltip(MatrixStack matrices, ItemStack stack, int x, int y, CallbackInfo ci)
 	{
-//		tooltips: food(hunger,saturation), armour(base and hardness),tools(speed,damage),fuel(burn time)
 		this.stack = stack;
 		ScreenMixin.setItemStack(stack);
 		if (Screen.hasShiftDown())
@@ -123,9 +86,9 @@ public abstract class ScreenMixin
 					RenderSystem.enableBlend();
 					RenderSystem.defaultBlendFunc();
 					matrices.push();
-					GuiHelper.drawRoundedRect(matrices, tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER, tooltipY + tooltipHeight + V_BORDER, 3, background);
-					final int i = color != null ? new Color(color.getColorComponents()[0], color.getColorComponents()[1], color.getColorComponents()[2], 1).getRGB() | 240 << 24 : borderTop;
-					GuiHelper.drawGradientBoardedRect(matrices, tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER, tooltipY + tooltipHeight + V_BORDER, 3, i, i);
+//					GuiHelper.drawRoundedRect(matrices, tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER, tooltipY + tooltipHeight + V_BORDER, 3, background);
+//					final int i = color != null ? new Color(color.getColorComponents()[0], color.getColorComponents()[1], color.getColorComponents()[2], 1).getRGB() | 240 << 24 : borderTop;
+//					GuiHelper.drawGradientBoardedRect(matrices, tooltipX - H_BORDER, tooltipY - V_BORDER, tooltipX + tooltipWidth + H_BORDER, tooltipY + tooltipHeight + V_BORDER, 3, i, i);
 
 					RenderSystem.enableDepthTest();
 					RenderSystem.disableBlend();
@@ -391,7 +354,7 @@ public abstract class ScreenMixin
 		immediate.draw();
 		return tooltipY;
 
-	}
+	}*/
 
 
 }

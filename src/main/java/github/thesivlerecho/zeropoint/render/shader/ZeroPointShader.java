@@ -4,16 +4,12 @@ import github.thesivlerecho.zeropoint.render.shader.programs.CircleLineShader;
 import github.thesivlerecho.zeropoint.render.shader.programs.CircleShader;
 import github.thesivlerecho.zeropoint.render.shader.programs.RoundedRectangleShader;
 import github.thesivlerecho.zeropoint.render.shader.programs.RoundedRectangleTextureShader;
-import github.thesivlerecho.zeropoint.render.shader.programs.post.BlurPostprocessShader;
-import github.thesivlerecho.zeropoint.render.shader.programs.post.ContrastPostprocessShader;
-import github.thesivlerecho.zeropoint.render.shader.programs.post.FastBlurPostprocessShader;
-import github.thesivlerecho.zeropoint.render.shader.programs.post.OutlinePostprocessShader;
 
 import java.util.function.Supplier;
 
 public enum ZeroPointShader
 {
-	ROUND_RECT(RoundedRectangleShader::new),ROUND_RECT_TEXTURE(RoundedRectangleTextureShader::new), CIRCLE(CircleShader::new), CIRCLE_LINE(CircleLineShader::new), CONTRAST_POST_P(ContrastPostprocessShader::new), BLUR(BlurPostprocessShader::new), FAST_BLUR(FastBlurPostprocessShader::new), OUTLINE(OutlinePostprocessShader::new);
+	ROUND_RECT(RoundedRectangleShader::new), ROUND_RECT_TEXTURE(RoundedRectangleTextureShader::new), CIRCLE(CircleShader::new), CIRCLE_LINE(CircleLineShader::new);
 
 	private final Supplier<? extends Shader> supplier;
 

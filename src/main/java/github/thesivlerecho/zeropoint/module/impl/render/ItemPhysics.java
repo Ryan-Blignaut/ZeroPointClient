@@ -1,10 +1,10 @@
 package github.thesivlerecho.zeropoint.module.impl.render;
 
-import github.thesivlerecho.zeropoint.config.Settings;
-import github.thesivlerecho.zeropoint.event.TargetEvent;
+import github.thesivlerecho.zeropoint.event.EventListener;
 import github.thesivlerecho.zeropoint.event.events.TickEvent;
 import github.thesivlerecho.zeropoint.module.BaseModule;
 import github.thesivlerecho.zeropoint.module.ModCategory;
+import github.thesivlerecho.zeropoint.module.ZPModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -18,19 +18,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3f;
 
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicBoolean;
 
+@ZPModule(name = "Item physics", category = ModCategory.RENDER)
 public class ItemPhysics extends BaseModule
 {
 	private static final Random RANDOM = new Random();
 	private static long tickDelta;
 	private static final MinecraftClient MINECRAFT_CLIENT = MinecraftClient.getInstance();
 
-	public ItemPhysics()
-	{
-		super("Item physics", new AtomicBoolean(Settings.PERSPECTIVE_HELD), ModCategory.RENDER);
-		this.onEnable();
-	}
 
 	public static void render(ItemEntity itemEntity, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i1, ItemStack itemStack, ItemRenderer itemRenderer, int itemAmount)
 	{
@@ -119,6 +114,7 @@ public class ItemPhysics extends BaseModule
 
 		matrixStack.pop();
 	}
+
 	public static void render1(ItemEntity itemEntity, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i1, ItemStack itemStack, ItemRenderer itemRenderer, int itemAmount)
 	{
 		matrixStack.push();
@@ -206,7 +202,8 @@ public class ItemPhysics extends BaseModule
 
 		matrixStack.pop();
 	}
-	@TargetEvent
+
+	@EventListener
 	public void tick(TickEvent event)
 	{
 		if (this.isEnabled())

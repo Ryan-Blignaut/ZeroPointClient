@@ -1,6 +1,5 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.gui.old.screen.SlideOut;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
@@ -15,12 +14,8 @@ public abstract class AbstractClientPlayerEntityMixin
 	@Inject(method = "getSkinTexture", at = @At("RETURN"), cancellable = true)
 	private void getSkinTexture(CallbackInfoReturnable<@Nullable Identifier> cir)
 	{
-
-		if (SlideOut.skin != null)
-			cir.setReturnValue(SlideOut.skin);
-//		cir.setReturnValue(new Identifier(ZeroPointClient.MOD_ID, "textures/cosmetic/a.png"));
-//		Identifier loc = FabricOfflineSkins.getLocationCape(getGameProfile(), info.getReturnValue());
-//		if (loc != null)
-//			info.setReturnValue(loc);
+		//TODO: custom skin applier
+//		if (SlideOut.skin != null)
+//			callbackInfoReturnable.setReturnValue(SlideOut.skin);
 	}
 }

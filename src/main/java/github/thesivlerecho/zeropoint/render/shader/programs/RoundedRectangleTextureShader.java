@@ -14,12 +14,12 @@ public class RoundedRectangleTextureShader extends Shader
 		super("new/round_rect_text", "new/colour_text");
 	}
 
-	public void setThickness(float thickness, float feather)
+	public static void setThickness(float thickness, float feather)
 	{
 		GL20.glUniform2f(0, thickness, feather);
 	}
 
-	public void setRectangle(float left, float top, float right, float bottom)
+	public static void setRectangle(float left, float top, float right, float bottom)
 	{
 		GL20.glUniform4f(1, left, top, right, bottom);
 	}
@@ -29,7 +29,7 @@ public class RoundedRectangleTextureShader extends Shader
 		setArgument("UV", new Vec2f(U, V));
 	}
 
-	public void setTexture(int location)
+	public static void setTexture(int location)
 	{
 		GlStateManager._bindTexture(location);
 		GL20.glUniform1i(2, 0);

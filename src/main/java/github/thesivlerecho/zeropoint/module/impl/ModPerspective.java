@@ -1,6 +1,5 @@
 package github.thesivlerecho.zeropoint.module.impl;
 
-import github.thesivlerecho.zeropoint.config.Settings;
 import github.thesivlerecho.zeropoint.util.KeyBinds;
 import net.minecraft.client.MinecraftClient;
 
@@ -15,7 +14,7 @@ public class ModPerspective
 
 	public static void tickPerspective()
 	{
-		if (Settings.PERSPECTIVE_HELD)
+		if (true)
 		{
 			if (perspectiveEnabled = KeyBinds.PERSPECTIVE.isPressed() && !held)
 			{

@@ -19,16 +19,6 @@ package github.thesivlerecho.zeropoint.event;
 
 import java.lang.reflect.Method;
 
-public record MethodData(Object source, Method target)
+public record MethodData(Object source, Method target, byte priority)
 {
-	public Object getSource()
-	{
-		return this.source;
-	}
-
-	public Method getTarget()
-	{
-		return this.target;
-	}
-
 }

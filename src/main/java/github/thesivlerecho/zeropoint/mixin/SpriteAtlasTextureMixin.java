@@ -47,10 +47,6 @@ public abstract class SpriteAtlasTextureMixin
 				NativeImage nativeImage = NativeImage.read(resource.getInputStream());
 				sprite = new SpriteAccessor((SpriteAtlasTexture) (Object) this, info, maxLevel, atlasWidth, atlasHeight, x, y,
 						parseImage(nativeImage, identifier));
-			} catch (Throwable var23)
-			{
-				throwable = var23;
-				throw var23;
 			} finally
 			{
 				if (resource != null)

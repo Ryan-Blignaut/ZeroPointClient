@@ -1,13 +1,11 @@
 package github.thesivlerecho.zeropoint.mixin;
 
-import github.thesivlerecho.zeropoint.config.Settings;
 import github.thesivlerecho.zeropoint.event.EventManager;
+import github.thesivlerecho.zeropoint.event.events.BlockOutlineEvent;
 import github.thesivlerecho.zeropoint.event.events.Render3dEvent;
-import github.thesivlerecho.zeropoint.module.impl.BlockOverlay;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.shape.VoxelShape;
 import org.spongepowered.asm.mixin.Final;
@@ -22,36 +20,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class WorldRendererMixin
 {
 
-	@Shadow
-	private ClientWorld world;
+	@Shadow private ClientWorld world;
 
-	@Shadow
-	@Final
-	private BufferBuilderStorage bufferBuilders;
+	@Shadow @Final private BufferBuilderStorage bufferBuilders;
 
 	@Inject(method = "drawShapeOutline", at = @At("HEAD"), cancellable = true)
-	private static void drawBlockOutline(MatrixStack matrixStack,
-			VertexConsumer vertexConsumer, VoxelShape voxelShape, double d, double e, double f, float g, float h, float i, float j, CallbackInfo ci)
+	private static void drawBlockOutline(MatrixStack matrixStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double d, double e, double f, float g, float h, float i, float j, CallbackInfo ci)
 	{
-		if (!Settings.BOUNDING_BOX_ENABLED)
-		{
-			ci.cancel();
-		}
-//		else if (Settings.CUSTOM_BOUNDING_BOX)
-		{
-			ci.cancel();
-
-			voxelShape.forEachBox((minX, minY, minZ, maxX, maxY, maxZ) -> BlockOverlay.renderBoundingQuads(matrixStack,
-					Tessellator.getInstance().getBuffer(),
-					new Box((minX + d - 0.005),
-							(minY + e - 0.005),
-							(minZ + f - 0.005),
-							(maxX + d + 0.005),
-							(maxY + e + 0.005),
-							(maxZ + f + 0.005))));
-
-		}
-
+		EventManager.call(new BlockOutlineEvent(matrixStack, voxelShape, d, e, f, ci));
 	}
 
 	@Inject(

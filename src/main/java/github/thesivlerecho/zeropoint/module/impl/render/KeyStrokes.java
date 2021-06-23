@@ -1,43 +1,39 @@
 package github.thesivlerecho.zeropoint.module.impl.render;
 
 import github.thesivlerecho.zeropoint.config.selector.ConfigOption;
-import github.thesivlerecho.zeropoint.event.TargetEvent;
+import github.thesivlerecho.zeropoint.event.EventListener;
 import github.thesivlerecho.zeropoint.event.events.Render2dEvent;
 import github.thesivlerecho.zeropoint.event.events.TickEvent;
 import github.thesivlerecho.zeropoint.guiv2.KeystrokeBase;
 import github.thesivlerecho.zeropoint.module.BaseModule;
 import github.thesivlerecho.zeropoint.module.ModCategory;
+import github.thesivlerecho.zeropoint.module.ZPModule;
 import github.thesivlerecho.zeropoint.render.widget.ContainerComponent;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.util.math.Vec2f;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
+@ZPModule(name = "Keystroke", category = ModCategory.HUD)
 public class KeyStrokes extends BaseModule
 {
 
 	public static final float DIMENSIONS = 22;
 
-	public KeyStrokes()
-	{
-		super("Keystroke", new AtomicBoolean(true), ModCategory.PLAYER);
-	}
-
 	@ConfigOption
 	public static Vec2f offset = new Vec2f(32, 32);
 
-	private final ContainerComponent<KeystrokeBase> container = getContainer();
+	private ContainerComponent<KeystrokeBase> container;
 
 
-	@TargetEvent
+	@EventListener
 	public void render(Render2dEvent event)
 	{
 		container.render(event.matrixStack());
 	}
 
-	@TargetEvent
+	@EventListener
 	public void update(TickEvent event)
 	{
+		container = getContainer();
 		container.getChildren().forEach(KeystrokeBase::updateKey);
 	}
 

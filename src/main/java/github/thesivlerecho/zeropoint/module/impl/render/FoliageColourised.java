@@ -1,29 +1,25 @@
 package github.thesivlerecho.zeropoint.module.impl.render;
 
 import com.google.common.collect.ImmutableList;
-import github.thesivlerecho.zeropoint.event.TargetEvent;
+import github.thesivlerecho.zeropoint.event.EventListener;
 import github.thesivlerecho.zeropoint.event.events.InitialisedEvent;
 import github.thesivlerecho.zeropoint.module.BaseModule;
 import github.thesivlerecho.zeropoint.module.ModCategory;
+import github.thesivlerecho.zeropoint.module.ZPModule;
 import net.fabricmc.fabric.impl.client.rendering.ColorProviderRegistryImpl;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 
 import java.util.List;
 
+@ZPModule(name = "Foliage Colourised", category = ModCategory.VISUALS)
 public class FoliageColourised extends BaseModule
 {
-	public FoliageColourised()
-	{
-		super("Foliage Colourised", ModCategory.VISUALS);
-	}
-
-
 	private static final List<Block> GRASS = ImmutableList.of(Blocks.LARGE_FERN, Blocks.FERN, Blocks.TALL_GRASS, Blocks.GRASS_BLOCK, Blocks.GRASS, Blocks.POTTED_FERN, Blocks.SUGAR_CANE);
 
 	private static final List<Block> LEAVES = ImmutableList.of(Blocks.OAK_LEAVES, Blocks.SPRUCE_LEAVES, Blocks.BIRCH_LEAVES, Blocks.ACACIA_LEAVES, Blocks.DARK_OAK_LEAVES, Blocks.JUNGLE_LEAVES, Blocks.VINE);
 
-	@TargetEvent
+	@EventListener
 	public static void registerGreenerColors(InitialisedEvent event)
 	{
 		register(GRASS);

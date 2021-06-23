@@ -1,5 +1,11 @@
 package github.thesivlerecho.zeropoint.module.impl;
 
+import github.thesivlerecho.zeropoint.config.selector.ConfigOption;
+import github.thesivlerecho.zeropoint.event.EventListener;
+import github.thesivlerecho.zeropoint.event.events.BlockOutlineEvent;
+import github.thesivlerecho.zeropoint.module.BaseModule;
+import github.thesivlerecho.zeropoint.module.ModCategory;
+import github.thesivlerecho.zeropoint.module.ZPModule;
 import github.thesivlerecho.zeropoint.util.ColourUtil;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
@@ -8,13 +14,33 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Matrix4f;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
 
-public class BlockOverlay
+@ZPModule(name = "Custom block highlight", category = ModCategory.RENDER)
+public class BlockOverlay extends BaseModule
 {
+	@ConfigOption
+	private boolean renderOutline = false, renderCustom = false;
+
+
+	@EventListener
+	public void renderBlockOutline(BlockOutlineEvent event)
+	{
+		final CallbackInfo callbackInfo = event.callbackInfo();
+		if (renderOutline)
+			callbackInfo.cancel();
+		else if (renderCustom)
+		{
+			callbackInfo.cancel();
+
+		}
+	}
+
 
 	//settings: outline t/f , outline color ; fill t/f , fill color ; line width
+
 
 	public static void renderBoundingBox(MatrixStack matrixStack, BufferBuilder buffer, float x1, float y1, float z1, float x2, float y2, float z2)
 	{

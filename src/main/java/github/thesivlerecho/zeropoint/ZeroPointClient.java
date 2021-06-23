@@ -3,14 +3,11 @@ package github.thesivlerecho.zeropoint;
 import github.thesivlerecho.zeropoint.event.EventManager;
 import github.thesivlerecho.zeropoint.event.events.InitialisedEvent;
 import github.thesivlerecho.zeropoint.event.events.TickEvent;
-import github.thesivlerecho.zeropoint.gui.old.DrawingHelper;
-import github.thesivlerecho.zeropoint.gui.old.overlay.watermark.WatermarkType;
-import github.thesivlerecho.zeropoint.gui.old.screen.PositioningScreen;
 import github.thesivlerecho.zeropoint.module.ModuleManager;
 import github.thesivlerecho.zeropoint.module.impl.ToolEquip;
 import github.thesivlerecho.zeropoint.module.impl.sound.Sounds;
-import github.thesivlerecho.zeropoint.util.KeyBinds;
 import github.thesivlerecho.zeropoint.render.shader.ShaderManager;
+import github.thesivlerecho.zeropoint.util.KeyBinds;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -25,12 +22,8 @@ import org.apache.logging.log4j.Logger;
 @Environment(EnvType.CLIENT)
 public class ZeroPointClient implements ClientModInitializer
 {
-
-
 	public static final String MOD_ID = "zero-point";
 	public static final Logger LOGGER = LogManager.getLogger("Zero Point");
-	public static final WatermarkType WATERMARK_TYPE = WatermarkType.TOP;
-	public static final DrawingHelper DRAWING_HELPER = new DrawingHelper();
 
 	private static void onTick(MinecraftClient minecraftClient)
 	{
@@ -41,14 +34,10 @@ public class ZeroPointClient implements ClientModInitializer
 			return;
 		EventManager.call(new TickEvent());
 
-//		KeystrokesRenderer.getInstance().updateKeystrokes();
-		if (KeyBinds.MENU.wasPressed())
+/*		if (KeyBinds.MENU.wasPressed())
 		{
 			MinecraftClient.getInstance().openScreen(new PositioningScreen());
-		}
-
-
-//		ModPerspective.tickPerspective();
+		}*/
 	}
 
 	@Override

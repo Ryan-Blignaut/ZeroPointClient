@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.List;
 
 @Mixin(World.class)
-public class WorldMixin implements IWorld
+public abstract class WorldMixin implements IWorld
 {
 	@Shadow @Final protected List<BlockEntityTickInvoker> blockEntityTickers;
 

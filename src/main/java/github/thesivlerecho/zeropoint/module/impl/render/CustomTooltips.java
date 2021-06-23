@@ -1,10 +1,11 @@
 package github.thesivlerecho.zeropoint.module.impl.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import github.thesivlerecho.zeropoint.event.TargetEvent;
+import github.thesivlerecho.zeropoint.event.EventListener;
 import github.thesivlerecho.zeropoint.event.events.RenderTooltipEvent;
 import github.thesivlerecho.zeropoint.module.BaseModule;
 import github.thesivlerecho.zeropoint.module.ModCategory;
+import github.thesivlerecho.zeropoint.module.ZPModule;
 import github.thesivlerecho.zeropoint.render.DrawingUtil;
 import github.thesivlerecho.zeropoint.render.widget.PositioningComponent;
 import net.minecraft.client.gui.tooltip.TooltipComponent;
@@ -12,6 +13,7 @@ import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.List;
 
+@ZPModule(name = "New tooltip render", category = ModCategory.RENDER)
 public class CustomTooltips extends BaseModule
 {
 	private static final int TOOLTIP_SPACE = 12;
@@ -19,15 +21,9 @@ public class CustomTooltips extends BaseModule
 	private static final int V_BORDER = 4;
 	private static final int LINE_HEIGHT = 10;
 
-
-	public CustomTooltips()
-	{
-		super("New tooltip render", ModCategory.RENDER);
-	}
-
 	private boolean rarityEnabled = true;
 
-	@TargetEvent
+	@EventListener
 	public void renderSmoothTooltip(RenderTooltipEvent event)
 	{
 //		event.callbackInfo().cancel();

@@ -1,37 +1,15 @@
 package github.thesivlerecho.zeropoint.module.impl.render;
 
-import github.thesivlerecho.zeropoint.event.TargetEvent;
-import github.thesivlerecho.zeropoint.event.events.Render2dEvent;
-import github.thesivlerecho.zeropoint.event.events.RenderTileEntityEvent;
 import github.thesivlerecho.zeropoint.module.BaseModule;
 import github.thesivlerecho.zeropoint.module.ModCategory;
-import github.thesivlerecho.zeropoint.render.shader.ShaderManager;
-import github.thesivlerecho.zeropoint.render.shader.ZeroPointShader;
-import github.thesivlerecho.zeropoint.render.shader.programs.post.OutlinePostprocessShader;
-import github.thesivlerecho.zeropoint.util.IWorld;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.util.Window;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import org.lwjgl.opengl.EXTFramebufferObject;
-import org.lwjgl.opengl.GL11;
+import github.thesivlerecho.zeropoint.module.ZPModule;
 
+@ZPModule(name = "Chest ESP", category = ModCategory.RENDER)
 public class ChestEsp extends BaseModule
 {
+/*
 
-	public ChestEsp()
-	{
-		super("Chest ESP", ModCategory.RENDER);
-	}
-
-	@TargetEvent
+	@EventListener
 	public void renderEvent(RenderTileEntityEvent event)
 	{
 		final BlockEntity entity = event.blockEntity();
@@ -58,10 +36,10 @@ public class ChestEsp extends BaseModule
 	}
 
 
-//	@TargetEvent
+	//	@TargetEvent
 	public void renderEvent(Render2dEvent event)
 	{
-		final OutlinePostprocessShader shader = ShaderManager.getShader(OutlinePostprocessShader.class, ZeroPointShader.OUTLINE);
+//		final OutlinePostprocessShader shader = ShaderManager.getShader(OutlinePostprocessShader.class, ZeroPointShader.OUTLINE);
 
 		final MatrixStack matrixStack = new MatrixStack();//event.matrixStack();
 		matrixStack.loadIdentity();
@@ -83,7 +61,7 @@ public class ChestEsp extends BaseModule
 				matrixStack.push();
 
 //				matrixStack.
-				matrixStack.translate((double) blockPos.getX() - d, (double) blockPos.getY() - e+1, (double) blockPos.getZ() - f);
+				matrixStack.translate((double) blockPos.getX() - d, (double) blockPos.getY() - e + 1, (double) blockPos.getZ() - f);
 //				matrixStack.multiply(new Quaternion(1, 0, 0, (camera.getPitch())));
 //				matrixStack.multiply(new Quaternion(0, 1, 0, (float) (camera.getYaw() + 180.0)));
 //				matrixStack.translate((double) blockPos.getX(), (double) blockPos.getY(), (double) blockPos.getZ());
@@ -172,7 +150,7 @@ public class ChestEsp extends BaseModule
 		GL11.glEnable(3553);
 		GL11.glEnable(3008);
 		GL11.glPopAttrib();
-	}
+	}*/
 
 
 }

@@ -7,6 +7,7 @@ import github.thesivlerecho.zeropoint.render.shader.programs.CircleLineShader;
 import github.thesivlerecho.zeropoint.render.shader.programs.CircleShader;
 import github.thesivlerecho.zeropoint.render.shader.programs.RoundedRectangleShader;
 import github.thesivlerecho.zeropoint.render.widget.PositioningComponent;
+import github.thesivlerecho.zeropoint.util.ZPColour;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
 import net.minecraft.client.render.*;
@@ -24,7 +25,7 @@ public class DrawingUtil
 	private static final Tessellator TESSELLATOR = Tessellator.getInstance();
 	private static final BufferBuilder BUFFER = TESSELLATOR.getBuffer();
 	private static int zIndex = 0;
-	private static ColorUtil.ColorHolder color = ColorUtil.getColor(Color.WHITE.getRGB());
+	private static ZPColour color = ColorUtil.getColor(Color.WHITE.getRGB());
 
 	public static void drawShader(MatrixStack matrixStack, PositioningComponent component2d, ZeroPointShader shader, Consumer<Shader> shaderUniforms)
 	{
@@ -36,8 +37,6 @@ public class DrawingUtil
 	public static void drawShaderCustom(PositioningComponent component2d, Shader shader, Consumer<Shader> shaderUniforms, Consumer<PositioningComponent> consumer)
 	{
 		shader.bind();
-//		shader.setCenter(component2d.getX() + component2d.getActualWidth() / 2, component2d.getY() + component2d.getActualHeight() / 2);
-//		shader.setRadius(radius, Math.min(radius, feather));
 		shaderUniforms.accept(shader);
 		consumer.accept(component2d);
 		shader.unBind();
@@ -48,7 +47,7 @@ public class DrawingUtil
 	{
 		enableGL2D();
 		final Matrix4f matrix4f = matrixStack.peek().getModel();
-		final ColorUtil.ColorHolder col = ColorUtil.getColor(colour);
+		final ZPColour col = ColorUtil.getColor(colour);
 		BUFFER.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		final Window window = MinecraftClient.getInstance().getWindow();
 		final double s = window.getScaleFactor();
@@ -105,7 +104,7 @@ public class DrawingUtil
 		 * 4 3
 		 * 1 2
 		 * */
-//		final ColorUtil.ColorHolder col = ColorUtil.getColor(positioningComponent.getColour());
+//		final ZPColour col = ColorUtil.getColor(positioningComponent.getColour());
 		final BufferBuilder builder = Tessellator.getInstance().getBuffer();
 		builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
 		builder.vertex(matrix4f, positioningComponent.getX(), positioningComponent.getH(), zIndex).color(color.getR(), color.getG(), color.getB(), color.getA()).next();
@@ -187,7 +186,7 @@ public class DrawingUtil
 		return animation < finalState ? (Math.min(animation + (double) add, finalState)) : (Math.max(animation - (double) add, finalState));
 	}
 
-	public static ColorUtil.ColorHolder getColor()
+	public static ZPColour getColor()
 	{
 		return color;
 	}

@@ -2,27 +2,13 @@ package github.thesivlerecho.zeropoint.module;
 
 import net.minecraft.client.MinecraftClient;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class BaseModule
 {
 	protected static final MinecraftClient MINECRAFT_CLIENT = MinecraftClient.getInstance();
-	private AtomicBoolean enabled;
-	private final String name;
-	private final github.thesivlerecho.zeropoint.module.ModCategory category;
 
-	public BaseModule(String name, AtomicBoolean on, ModCategory category)
-	{
-		this.name = name;
-		this.category = category;
-		this.enabled = on;
-	}
-
-	public BaseModule(String name, ModCategory category)
-	{
-		this.name = name;
-		this.category = category;
-	}
+	private final String name = getModuleInfo().name();
+	private final ModCategory category = getModuleInfo().category();
+	private boolean active = getModuleInfo().active();
 
 	public void toggle()
 	{
@@ -32,18 +18,23 @@ public class BaseModule
 
 	public void onEnable()
 	{
-		enabled.set(true);
+		active = true;
 	}
 
 	public void onDisable()
 	{
-		enabled.set(false);
+		active = false;
 	}
 
 	public boolean isEnabled()
 	{
-		return enabled.get();
+		return active;
 	}
 
+
+	private ZPModule getModuleInfo()
+	{
+		return getClass().getAnnotation(ZPModule.class);
+	}
 
 }
